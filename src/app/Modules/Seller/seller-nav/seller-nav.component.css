@@ -1,0 +1,66 @@
+/* Sidebar Navigation */
+.navbar-links {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 230px;
+  background: linear-gradient(135deg, #2b3a4a, #1c2733); /* Gradient background */
+  padding-top: 20px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  transition: 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+
+
+/* Navigation Links */
+.navbar-links li {
+  list-style: none;
+  width: 100%;
+  text-align: center;
+  margin: 5px 0;
+}
+
+.navbar-links .nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+  border-radius: 8px;
+  transition: 0.3s ease-in-out;
+  position: relative;
+}
+
+/* Hover Effect */
+.navbar-links .nav-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+/* Active Link Styling */
+.navbar-links .nav-link.active {
+  background: #007bff;
+  font-weight: bold;
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .navbar-links {
+    width: 180px;
+  }
+  .navbar-links .nav-link {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

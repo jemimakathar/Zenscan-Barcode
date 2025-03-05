@@ -1,0 +1,57 @@
+<app-seller-nav></app-seller-nav>
+<h2>Seller Categories</h2>
+  <img class="icon" src="/assets/plus.png" (click)="toggleCategoryForm()" alt="plus-icon">
+  
+  <form *ngIf="showCategoryForm" class="category-form"> 
+    <input
+      type="text"
+      placeholder="Category Name"
+      [(ngModel)]="newCategoryName"
+      (input)="generateBarcodePreview()"
+      name="newCategoryName"
+      required
+    />
+  
+    <select [(ngModel)]="newCategoryBarcodeType" (change)="generateBarcodePreview()" name="newCategoryBarcodeType">
+      <option value='code128'>Code 128</option>
+      <option value='upca'>upc-a</option>
+      <option value='ean13'>EAN-13</option>
+      <option value='ean8'>EAN 8</option>
+     
+  
+    </select>
+    <select [(ngModel)]="newCategorySize" (change)="generateBarcodePreview()" name="newCategorySize">
+      <option value="small">Small</option>
+      <option value="medium">Medium</option>
+      <option value="large">Large</option>
+    </select>
+  
+    <label>color:</label><input
+      type="color"
+      [(ngModel)]="newCategoryColor"
+      (change)="generateBarcodePreview()"
+      name="newCategoryColor"
+    />
+    
+    
+    <div class="barcode-preview" [ngClass]="barcodePreview" *ngIf="barcodePreviewUrl">
+      <p>Barcode Preview:</p>
+      <img [src]="barcodePreviewUrl" alt="Barcode Preview" />
+    </div>
+  
+    <a (click)="addNewCategory()">Submit Category</a>
+    <a (click)="resetForm()">Cancel</a>
+  </form>
+  
+  <div class="category-display">
+  <div class="category-list">
+    <div *ngFor="let category of fetchCategories" class="category-card">
+      <img src="/assets/trash.png" alt="trash" (click)="softDeleteCategory(category)" class="trash">
+      <h3>{{ category.data.categoryName }}</h3>
+      <p><strong>Barcode Type:</strong> {{category.data.barcodeType }}</p>
+      <button (click)="navigateToProduct(category.data.categoryName)">View Products</button>
+    </div>
+  </div>
+ </div>
+
+  

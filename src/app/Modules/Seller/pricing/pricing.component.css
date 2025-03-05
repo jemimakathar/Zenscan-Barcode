@@ -1,0 +1,294 @@
+/* General Styles */
+.title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #007bff;
+  }
+  
+  /* Container for Plans */
+  .plans-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Individual Plan Card */
+  .plan-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 300px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+  
+  .plan-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Plan Title */
+  .plan-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  /* Plan Description */
+  .plan-description {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: #666;
+  }
+  
+  /* Plan Price */
+  .plan-price {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #28a745;
+  }
+  
+  /* Plan Duration */
+  .plan-duration {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* No Plans Message */
+  .no-plans-message {
+    text-align: center;
+    font-size: 1.25rem;
+    color: #888;
+    margin-top: 20px;
+  }
+  /* toggler for pricing */
+
+.pricing-main-container{
+  text-align: center;
+  margin: 40px 0;
+}
+
+.pricing-main-container h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #212121; /* Dark gray for strong contrast */
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.pricing-main-container p {
+  font-size: 1.2rem;
+  color: #555; /* Medium gray for readability */
+  line-height: 1.6;
+  margin-left: 2%;
+}
+ .toggle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.toggle-switch {
+  display: flex;
+  position: relative;
+  background: white;
+  border-radius: 25px;
+  padding: 5px;
+  width: 160px;
+  border: 1px solid black;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+}
+
+.toggle-option {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  position: relative;
+  z-index: 3;
+  color: black;
+  padding: 5px 10px;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 5px;
+  width: 48%;
+  height: 29px;
+  background:red; /* Orange color */
+  border-radius: 19px;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.toggle-switch.active .toggle-slider {
+  left: 5px;
+}
+
+.toggle-switch .toggle-option.active {
+  color: white;
+}
+.get-started-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  background: rgb(248, 47, 47);
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.get-started-link:hover {
+  background: #b6270d;
+  transform: scale(1.05);
+}
+
+.get-started-link:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(250, 107, 25, 0.7);
+}
+.cards {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Individual card */
+.card {
+   margin: 10px;
+   padding: 16px;
+   border: 1px solid #e0dada;
+   border-radius: 10px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   background: #fff;
+   width: 210px;
+   height:300px;
+}
+
+.card:hover {
+   background-color:rgb(207, 205, 202);
+   transform: translateY(-15px);
+}
+.payment-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding: 40px;
+  background-color: #f8f9fc;
+}
+
+.payment-form {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.payment-form h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.payment-form label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.payment-form input {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #f3f3f3;
+  color: #333;
+}
+
+.payment-form input:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #fff;
+}
+
+.confirm-btn {
+  background: #e63946;
+  color: white;
+  font-size: 16px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: 0.3s ease;
+  width: 95%;
+  
+}
+
+.confirm-btn:hover {
+  background: #c72b3f;
+}
+
+.cancel-btn {
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 23px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+  margin-left: 92%;
+}
+
+
+.right-content {
+  width: 50%;
+  background: rgb(241, 239, 239);
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.right-content img {
+  max-width: 150px;
+  margin-bottom: 15px;
+}
+
+.right-content p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.right-content strong {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+
+

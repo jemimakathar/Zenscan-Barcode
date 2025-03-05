@@ -1,0 +1,70 @@
+<section class="pricing-main-container" id="pricing">
+  
+  <h3>We Want Your Business to be Profitable</h3>
+  <p>Flexible and affordable pricing. Made for every growing retail business.</p>
+
+  <!-- Toggle Switch -->
+  <div class="toggle-container">
+      <div class="toggle-switch" [class.active]="isYearly" (click)="togglePricing()">
+      <span class="toggle-option" [class.active]="!isYearly">Monthly</span>
+      <span class="toggle-option" [class.active]="isYearly">Yearly</span>
+      <div class="toggle-slider" [style.left]="isYearly ? '43%' : '0'"></div>
+    </div>
+  </div>
+
+  <!-- Pricing Cards (Horizontal Layout) -->
+  <div class="cards" *ngIf="showPlans">
+    <div *ngFor="let plan of filteredPlans" class="card">
+      <div class="card-content">
+        <h4>{{ plan.data.planName }}</h4>
+        <p><strong>Price:</strong> {{plan.data.price | currency :'INR'}}</p>
+        <p>{{ plan.data.description }}</p>
+        <p><strong>Duration:</strong> {{ plan.data.duration }} Months</p>
+        <a class="get-started-link"  (click)="selectPlan(plan)" >Get Started</a>
+      </div>
+    </div>
+  </div>   
+</section>
+<!-- Payment Card -->
+<div *ngIf="selectedPlan && showPaymentForm" class="payment-container">
+  <!-- Payment Form -->
+  <form class="payment-form">
+    <a class="cancel-btn" (click)="cancelPlan()">X</a>
+    <h3>Plan Details</h3>
+
+    <label for="planName">Plan Name:</label>
+    <input id="planName" type="text" [value]="selectedPlan.data.planName" readonly />
+
+    <label for="price">Price:</label>
+    <input id="price" type="text" [value]="selectedPlan.data.price" readonly />
+
+    <label for="duration">Duration:</label>
+    <input id="duration" type="text" [value]="selectedPlan.data.duration" readonly />
+
+    <label for="startDate">Start Date:</label>
+    <input id="startDate" type="text" [value]="startDate" readonly />
+
+    <label for="endDate">End Date:</label>
+    <input id="endDate" type="text" [value]="endDate" readonly />
+
+    <button class="confirm-btn" (click)="subscribeToPlan()">Proceed to Payment</button>
+  </form>
+
+
+
+  <!-- Right Side: Testimonial or Additional Content -->
+  <div class="right-content">
+    <img src="/assets/BarCode-scanner.png" alt="Zen Scan Logo" />
+    <p>
+      A powerful Store Management software should do more than just process transactions it should drive growth, enhance efficiency, and maximize profits. Our cutting-edge solution ensures 100% accuracy in stock management across all departments, helping you reduce losses and optimize inventory.
+      With seamless operations, real-time tracking, and an intuitive interface, you can focus on what matters most growing your business and improving customer experience.
+      Whether you're managing a single store or multiple locations, our POS system adapts to your business needs, providing centralized control and effortless scalability. Gain real time insights into sales trends, employee performance, and customer preferences, allowing you to make informed decisions that drive revenue.  
+      Our automated stock alerts prevent inventory shortages and overstocking, ensuring smooth operations and better financial planning. With integrated payment solutions, fast billing you can offer customers a seamless checkout experience that keeps them coming back.  
+      Stay ahead of the competition with a POS system designed to simplify store management, boost efficiency, and empower your business with technology-driven innovation. Upgrade to our intelligent POS today and unlock the full potential of your retail success!
+    </p>
+    <strong>"Transform Your Store, Boost Your Profits – Subscribe Today!"</strong>
+    <p>Zen Scan</p>
+  </div>
+</div>
+
+

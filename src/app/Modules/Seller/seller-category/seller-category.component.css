@@ -1,0 +1,155 @@
+h2 {
+    margin-left: 50%;
+}
+
+/* Button Styling */
+button {
+    background-color: #6b8bad;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s ease-in-out;
+    margin-left: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Category Form */
+.category-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin-top: 10px;
+    margin-left: 85%; /* Changed to 0 to align to the left */
+    position: absolute; /* Added to position the form */
+    left: 20px; /* Adjust this value to position the form as needed */
+    top: 100px; /* Adjust this value to position the form as needed */
+    transform: translateX(-50%);
+    z-index: 100;
+}
+
+input,
+select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Category List */
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Category Card */
+.category-display{
+  margin-left:25%;
+
+}
+.category-card {
+  background: linear-gradient(135deg, #a4afeb, #292727);
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  width:230px; /* Make the card take up the full width of the grid cell */
+  text-align: center;
+  margin-left:5px; /* Remove the left margin */
+  height: 120px;
+  transition: 0.3s ease-in-out;
+  position: relative;
+  
+}
+.category-card h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.category-card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+.category-card:hover {
+    transform: scale(1.05);
+}
+
+/* Submit and Cancel Buttons */
+a {
+    display: block;
+    text-align: center;
+    padding: 10px 15px;
+    margin-top: 10px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: "Poppins", sans-serif;
+    transition: 0.3s;
+}
+
+a:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.barcode-preview {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.barcode-preview p {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+#barcodePreview {
+    border: 1px solid #ddd;
+    padding: 5px;
+    display: block;
+    margin: auto;
+    background: white;
+}
+
+.barcode-preview img {
+    height: auto;
+    width: auto;
+    display: block;
+    margin: auto;
+   
+}
+
+.icon {
+    height: 30px;
+    width: 30px;
+    margin-left: 96%;
+    cursor: pointer; /* Added to indicate it's clickable */
+    transition: transform 0.3s ease-in-out;
+}
+.icon:hover {
+    transform: scale(1.1);
+}
+.trash{
+    height:25px;
+    width:25px;
+    margin-left: 205px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+.trash:hover {
+    transform: scale(1.1);
+}

@@ -1,0 +1,45 @@
+<div class="demo-container">
+    <h1>Demo Mode</h1>
+  
+    <div class="category-section">
+      <h2>Categories</h2>
+      <ul>
+        <li *ngFor="let category of categories">
+          {{ category.data.categoryName }} ({{ category.data.barcodeType }})
+          <button (click)="deleteCategory(category._id)">Delete</button>
+        </li>
+      </ul>
+      <div>
+        <input [(ngModel)]="newCategoryName" placeholder="Category Name">
+        <select [(ngModel)]="newCategoryBarcodeType">
+          <option value="ean13">EAN-13</option>
+          <option value="code128">Code 128</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+        </select>
+        <button (click)="addCategory(newCategoryName, newCategoryBarcodeType)">Add Category</button>
+      </div>
+    </div>
+  
+    <div class="product-section">
+      <h2>Products</h2>
+      <ul>
+        <li *ngFor="let product of products">
+          {{ product.data.productName }} - ${{ product.data.productPrice }} ({{ product.data.quantity }} in stock)
+          <button (click)="deleteProduct(product._id)">Delete</button>
+        </li>
+      </ul>
+      <div>
+        <input [(ngModel)]="newProductName" placeholder="Product Name">
+        <input [(ngModel)]="newProductPrice" type="number" placeholder="Price">
+        <input [(ngModel)]="newProductDescription" placeholder="Description">
+        <input [(ngModel)]="newProductQuantity" type="number" placeholder="Quantity">
+        <select [(ngModel)]="newProductCategory" (change)="onCategoryChange()">
+          <option value="">Select Category</option>
+          <option *ngFor="let category of categories" [value]="category.data.categoryName">{{ category.data.categoryName }}</option>
+        </select>
+        <input [(ngModel)]="newProductBarcodeType" placeholder="Barcode Type" readonly>
+        <button (click)="addProduct(newProductName, newProductPrice, newProductDescription, newProductQuantity, newProductCategory)">Add Product</button>
+      </div>
+    </div>
+  </div>

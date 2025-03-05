@@ -1,0 +1,305 @@
+<!-- nav-bar -->
+ <div class="body">
+<nav class="navbar">
+  <div class="navbar-container">
+      <!-- Logo and Brand Name -->
+      <a class="navbar-brand" href="#">
+          <img src="/assets/BarCode-scanner.png" class="logo" alt="Logo">
+      </a>
+
+      <!-- Navbar Links -->
+      <ul class="navbar-links" id="navbarLinks">
+          <li><a class="nav-link" href="#home" routerLinkActive="active">Home</a></li>
+          <li><a class="nav-link" href="#features" routerLinkActive="active">Features</a></li>
+          <li><a class="nav-link" href="#about" routerLinkActive="active">About</a></li>
+          <li><a class="nav-link" href="#pricing" routerLinkActive="active" >Pricing</a></li>
+          <li><a class="nav-link" href="#contact" routerLinkActive="active">Contact</a></li>
+         
+      </ul>
+
+
+      <!-- Search, Sign In, and Sign Up -->
+      <div class="nav-actions">
+          <span class="profile-icon"><img src="/assets/profile.png" alt="profile"></span>
+          <a class="signin" routerLink="/seller-login">SIGN IN</a>
+          <a class="signup" routerLink="/register">SIGN UP NOW</a>
+      </div>
+  </div>
+</nav>
+
+
+
+<!-- front image -->
+<div class="image-container" id="home">
+  <img src="/assets/scan.jpg" alt="Supermarket">
+  <div class="text-overlay">" With Zen Scan, you can actually <br>organize your business"</div>
+</div>
+<button routerLink="/register">Join Now!</button>
+<div class="pos-highlight">
+  <h1>Retail point-of-sale (POS) software for retail stores</h1>
+  <p>Retail software designed to reduce cost, increase profits and grow your retail store. With Zen Scan,
+    managing your stores in easy and efficient. Explore our user-friendly POS billing software for retail shops that
+    simplifies the billing process, and achieves customer satisfaction through swift and accurate transactions.</p>
+  <img src="/assets/retail-banner.png" alt="banner-image">
+</div>
+
+
+<!-- features -->
+<h1 class="pos-highlight" id="features">Step up your game with omnichannel ERP</h1>
+<section class="features">
+
+  <div class="feature-card">
+    <img src="/assets/stock-keeping-unit.png" alt="ONDC" />
+    <h3>Stock Monitoring</h3>
+    <p>
+      Notify sellers when stock levels drop below a defined threshold and stocks to be filled to their respective
+      category.
+    </p>
+  </div>
+  <div class="separator"></div>
+
+  <div class="feature-card">
+    <img src="/assets/data-security.png" alt="OrderEasy" />
+    <h3>Data Security</h3>
+    <p>
+      protection of sensitive user information, such as personal details,login credentials, from unauthorized access.
+    </p>
+  </div>
+  <div class="separator"></div>
+
+  <div class="feature-card">
+    <img src="/assets/list.png" alt="GoSure - StockPick" />
+    <h3>Categories</h3>
+    <p>
+      Sellers can add any type of category to suit their products such as Clothing, Electronics, ensuring flexibility to
+      match diverse business need.
+    </p>
+  </div>
+  <div class="separator"></div>
+
+  <div class="feature-card">
+    <img src="/assets/payment.png" alt="GoDeliver" />
+    <h3>Bill Generation</h3>
+    <p>
+      Bill generation for products involves creating an invoice that lists items purchased, their quantities, prices and
+      total cost. </p>
+  </div>
+
+</section>
+
+
+
+<section class="features"  >
+  <div class="feature-card">
+    <img src="/assets/print.png" alt="ONDC" />
+    <h3>Print</h3>
+    <p>
+      Printing a barcode generated for a product involves encoding product details into a scannable format and sending
+      it to a printer.
+    </p>
+  </div>
+  <div class="separator"></div>
+
+  <div class="feature-card">
+    <img src="/assets/barcode-product.png" alt="OrderEasy" />
+    <h3>Barcode Generation</h3>
+    <p>
+      Barcode generation converts product details into a machine-readable code using formats like EAN, or Code 128.
+      These barcodes used for billing, and tracking processes efficiently.
+    </p>
+  </div>
+  <div class="separator"></div>
+
+  <div class="feature-card">
+    <img src="/assets/order.png" alt="GoSure - StockPick" />
+    <h3>Products</h3>
+    <p>
+      products can be added under specific categories to keep them well-organized. This allows users to easily browse
+      and find items based on their preferences.
+    </p>
+  </div>
+  <div class="separator"></div>
+
+  <div class="feature-card">
+    <img src="/assets/group.png" alt="GoDeliver" />
+    <h3>User Friendly</h3>
+    <p>
+      Users can quickly navigate through categories, add products effortlessly, and access features like barcode
+      generation with just a few clicks, ensuring a hassle-free experience for everyone.
+    </p>
+  </div>
+
+</section>
+
+<!-- pricing -->
+
+<section class="pricing-main-container" id="pricing">
+  <h3>We Want Your Business to be Profitable</h3>
+  <p>Flexible and affordable pricing. Made for every growing retail business.</p>
+
+  <!-- Toggle Switch -->
+  <div class="toggle-container">
+    <div class="toggle-switch" [class.active]="isYearly" (click)="togglePricing()">
+      <span class="toggle-option" [class.active]="!isYearly">Monthly</span>
+      <span class="toggle-option" [class.active]="isYearly">Yearly</span>
+      <div class="toggle-slider" [style.left]="isYearly ? '43%' : '0'"></div>
+    </div>
+  </div>
+
+  <!-- Pricing Cards (Horizontal Layout) -->
+  <div class="cards">
+    <div *ngFor="let plan of filteredPlans" class="card">
+      <div class="card-content">
+        <h4>{{ plan.data.planName }}</h4>
+        <p><strong>Price:</strong> {{ plan.data.price }}</p>
+        <p>{{ plan.data.description }}</p>
+        <p><strong>Duration:</strong> {{ plan.data.duration }} Months</p>
+        <a class="get-started-link" routerLink="/register">Get Started</a>
+      </div>
+    </div>
+  </div> 
+</section>
+
+
+<!-- stock check -->
+
+<div class="stock-highlight">
+  <h1 class="highlight-title">Monitoring stock is the business magnifier...</h1>
+  <p>Retail POS system with Stock Notifier</p>
+
+  <div class="stock-container">
+    <div class="stock-item">
+      <img src="/assets/average-walk-in.jpg" alt="average-walk-in">
+      <h3>Average walk-in with less Product Purchased </h3>
+    </div>
+
+    <div class="arrow-container">
+      <img class="arrow" src="/assets/arrow.png" alt="arrow">
+    </div>
+
+    <div class="stock-item">
+      <img src="/assets/mass-walkin.jpg" alt="mass-walk-in">
+      <h3>Mass walk-in with More Product Purchased </h3>
+    </div>
+
+    <div class="arrow-container">
+      <img class="arrow" src="/assets/arrow.png" alt="arrow">
+    </div>
+
+    <div class="stock-item">
+      <img src="/assets/business-profit.jpg" alt="business-profit">
+      <h3>Monitor the stock<br> and gain in Business </h3>
+    </div>
+  </div>
+</div>
+
+<div class="about-us-container" id="about">
+  <h2>Get Your Store Information Anywhere, Anytime!</h2>
+  <p>
+    Access retail store data effortlessly. Transition to our retail POS software with built-in business intelligence for more data-driven decision-making.
+  </p>
+
+  <!-- Thumbnail Image with YouTube Link -->
+  <div class="video-container">
+    <a href="https://www.youtube.com/watch?v=Iytvari3ros" target="_blank">
+      <img src="/assets/image.png" alt="Watch Video">
+    </a>
+  </div>
+</div>
+
+
+<div class="integration-section">
+  <div class="integration-image">
+    <img src="/assets/physical-store.png" alt="Online Store Integration">
+  </div>
+  <div class="integration-content">
+    <h2>Integrate online and physical store</h2>
+    <h3>One tool for common billing, accounting, and more.</h3>
+    <p>
+        Managing your store has never been easier! Our real-time store management application
+        seamlessly integrates with your retail billing software, ensuring smooth operations across
+        all sales channels. Track online and in-store transactions in real time, manage inventory 
+        efficiently, and sync product details instantly. With automated order processing and live stock updates,
+        you can prevent shortages, optimize pricing, and streamline deliveries effortlessly. Take full control of
+        your business with data-driven insights and enhance customer satisfaction with a fully synchronized, 
+        professional retail management solution.
+    </p>
+  </div>
+  
+</div>
+
+
+<!-- card -->
+<h1 id="heading">___Benefits of ZenScan____</h1>
+<div class="cards">
+  <div class="card">
+    <div class="card-content">
+      <img src="/assets/billing.webp" alt="billing-img" height="55%" width="70%">
+      <div class="card-text">
+        <h3>Fast & Accurate Billing</h3>
+        <h5> Instantly scans product barcodes, reducing checkout time and human errors.</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-content">
+      <img src="/assets/stock.webp" alt="stockChecking" id="stock-img" height="65%" width="80%">
+      <div class="card-text">
+        <h3>Real-Time Stock Updates</h3>
+        <h5>Automatically deducts sold items from inventory to prevent stock outs.</h5>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content">
+      <img src="/assets/customers.webp" alt="customer" id="customer-img" height="65%" width="70%">
+      <div class="card-text">
+        <h3>Fast & Effortless Checkout</h3>
+        <h5>Customers enjoy a smooth and quick shopping experience.</h5>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content">
+      <img src="/assets/generate.png" alt="generate" id="genertae-img" height="270px" width="100%">
+      <div class="card-text">
+        <h3>Unique Identification</h3>
+        <h5> Assign a distinct barcode to each product for easy tracking.</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer" id="contact">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>About Us</h3>
+      <p>Your trusted Zen Scan empowers businesses with real-time inventory tracking, seamless integration across multiple sales channels, and efficient
+         retail operations.With automated billing and instant stock updates, our platform ensures better decision-making.
+         Stay ahead in the competitive retail landscape with a smart, reliable, and scalable solution tailored to your needs.</p>
+    </div>
+
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Contact Us</h3>
+      <p>Email: jemima.kathargmail.com</p>
+      <p>Phone: +91 7810083731</p>
+      <p>Address: 123 Business St, City, Country</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Zen Scan. All rights reserved.</p>
+  </div>
+</footer>
+</div>

@@ -1,0 +1,42 @@
+<app-seller-nav></app-seller-nav>
+
+<div class="main-container">
+  <!-- Left Side: Scanner -->
+  <div class="scanner-container">
+    <h2>Barcode Scanner</h2>
+    <div #scannerContainer class="scanner-video"></div>
+  </div>
+
+  <!-- Right Side: Bill Details -->
+  <div class="billing-container">
+    <label for="customerNo">Phone Number:</label>
+    <input type="text" id="customerNumber" [(ngModel)]="customerNo" (ngModelChange)="checkCustomer()" placeholder="Enter customer Phone Number" required pattern="[0-9]{10}">
+    <div *ngIf="customerNo && !isValidPhoneNumber()" class="error-message">
+      Please enter a valid 10-digit phone number.
+    </div>
+
+    <label for="customerName">Customer Name:</label>
+    <input type="text" id="customerName" [(ngModel)]="customerName" placeholder="Enter customer name">
+    <h3 class="heading">Scanned Products</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Price</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of scannedProducts">
+          <td>{{ product.data.productName }}</td>
+          <td>{{ product.data.productPrice | currency :'INR' }}</td>
+          <td><input type="number" [(ngModel)]="product.data.quantity" (change)="updateTotalCost()" min="1"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Total: {{ totalCost | currency }}</h3>
+
+    <button (click)="generateBill()">Generate Bill</button>
+  </div>
+</div>

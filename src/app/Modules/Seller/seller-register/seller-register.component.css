@@ -1,0 +1,189 @@
+.full {
+  background-color: #dddcdc; /* Dark background color for the full screen */
+  width: 100vw; /* Full width of the viewport */
+  overflow: hidden;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  position: fixed; /* Fixes the div to the viewport */
+  height: 100%;    /* Make it take the full height of the viewport */
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  
+}
+
+.register-container
+{
+    max-width: 45%; /* form size*/
+    margin: 60px auto;/* form make center*/
+    padding: 18px;
+    background-color: white; 
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    text-align: center;
+    margin-top: 30px;
+    overflow: hidden;
+}
+
+.register-container .head {
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: capitalize;
+  color: black; /* White header */
+  text-align: center;
+}
+
+.register-container .input {
+  margin-bottom: 20px;
+  text-align: left;
+  margin-left: 100px;
+}
+
+.register-container input {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #8a7e7e;
+  border-radius: 5px;
+  background-color: #dddddd; /* Input background color */
+  color: #141313; /* Input text color */
+  font-size: 14px;
+  
+}
+
+.register-container input:focus {
+  outline: none;
+  border-color: #141313; /* Red focus border */
+  background-color: #dad6d6;
+}
+
+.register-container .button {
+  width: 52%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color:  #0666b4;
+  color: white; /* White button text */
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 27px;
+  margin-top: 30px;
+  
+}
+
+.register-container .button:hover {
+  background-color: #0f1952;
+}
+
+.register-container span {
+  color: #da0000; /* Red error text */
+  font-size: 12px;
+}
+
+.register-container form {
+  margin-bottom: 80px;
+  margin-left: 30px;
+}
+ul {
+    list-style-type: none; /* Removes default list bullets */
+    padding-left: 0; /* Removes default padding */
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  ul li {
+    margin-bottom: 5px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 13px;
+    color:red;
+    
+  }
+  
+  ul li::before {
+    content: '✅'; /* You can use a checkmark or any symbol you prefer */
+    margin-right: 8px;
+    
+    
+  }
+  
+  ul li.invalid::before {
+    content: '❌'; /* Red cross symbol for invalid items */
+  }
+
+  .create-account
+{
+    color:rgb(66, 67, 68);
+    margin-bottom: 8%;
+    margin-left: 32%;
+}
+
+.login-link {
+  color:#0666b4;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+
+
+#dob{
+  color: #9e9797;
+}
+
+  @media (max-width: 768px) {
+    .register-container {
+      max-width: 70%; /* Increase form width for smaller screens */
+      margin-top: 20px;
+      padding: 15px;
+    }
+  
+    .register-container .head {
+      font-size: 26px; /* Smaller header font */
+    }
+  
+    .register-container input {
+      width: 80%; /* Increase input width */
+    }
+  
+    .register-container .button {
+      width: 60%; /* Button takes up more width */
+      font-size: 14px; /* Smaller font size */
+      margin-left: 60px;
+    }
+  
+    ul li {
+      font-size: 12px; /* Smaller font size */
+    }
+  }
+  
+  /* For mobile screens with width less than 480px */
+  @media (max-width: 480px) {
+    .register-container {
+      max-width: 90%; /* Almost full width for mobile */
+      margin-top: 10px;
+      padding: 12px;
+    }
+  
+    .register-container .head {
+      font-size: 22px; /* Even smaller font size for header */
+    }
+  
+    .register-container input {
+      width:70%; /* Inputs take up full width */
+      margin-left:70px; /* Remove left margin */
+    }
+  
+    .register-container .button {
+      width: 100%; /* Button takes full width on mobile */
+      font-size: 14px; /* Button text size */
+
+    }
+  
+    ul li {
+      font-size: 11px; /* Further reduced font size for mobile */
+    }
+  
+    .full {
+      padding: 5px; /* Small padding for mobile */
+    }
+  }
+
+ 

@@ -1,0 +1,123 @@
+/* General Page Styling */
+.admin-container {
+    text-align: center;
+    padding:18px 3px;
+    background-color: #f8f9fa;
+
+   
+}
+
+/* Welcome Heading */
+.admin-heading {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 3px;
+}
+
+.admin-subtext {
+    font-size: 18px;
+    color: #666;
+    max-width: 700px;
+    margin: auto;
+    margin-bottom: 40px;
+}
+
+/* Layout for Image & Content */
+.admin-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    max-width: 1100px;
+    margin: auto;
+    flex-wrap: wrap;
+    background: rgb(207, 232, 240);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Image Styling */
+.admin-image-container {
+    flex: 1;
+    max-width: 500px;
+}
+
+.admin-image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Admin Content */
+.admin-content {
+    flex: 1;
+    max-width: 450px;
+    text-align: left;
+}
+
+.admin-content h3 {
+    font-size: 24px;
+    color: #222;
+    margin-bottom: 15px;
+}
+
+/* Features Box */
+.admin-features {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.feature {
+    margin-bottom: 15px;
+}
+
+.feature h3 {
+    font-size: 20px;
+    color: #007bff;
+}
+
+.feature p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Admin Button */
+.admin-btn {
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:0.3s ease-in-out;
+    font-weight: bold;
+    width: 100%;
+}
+
+.admin-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .admin-image-container {
+        max-width: 100%;
+    }
+
+    .admin-content {
+        max-width: 100%;
+        text-align: center;
+    }
+}

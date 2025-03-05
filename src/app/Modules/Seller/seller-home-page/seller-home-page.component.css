@@ -1,0 +1,124 @@
+
+.main-container {
+    text-align: center;
+    margin-top: 20px;
+    margin-left: 7%;
+  
+}
+
+.heading {
+    font-size: 26px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 10px;
+    margin-left: 6%;
+    
+}
+
+.side-heading {
+    text-align: center;
+    font-size: 22px;
+    color: #706969;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-left: 13%;
+}
+
+.seller-home {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px;
+    max-width: 1200px;
+    margin: auto;
+    background: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    margin-left: 15%;
+}
+
+.content {
+    width: 45%;
+    padding-right: 20px;
+    margin-left: 5%;
+}
+
+/* Content Heading */
+.content h3 {
+    font-size: 26px;
+    color: #d90429;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Content Paragraph */
+.content p {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Styled Checklist */
+.checklist {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+}
+
+/* Checklist Items */
+.checklist li {
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    color: #222;
+    padding: 8px 0;
+    font-weight: 500;
+}
+
+/* Custom Icon */
+.checklist li::before {
+    content: "✔";
+    color: #2a9d8f; 
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 12px;
+}
+
+/* Right Side: Image */
+.image-container {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .seller-home {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px;
+    }
+
+    .content, .image-container {
+        width: 100%;
+        padding: 0;
+    }
+
+    .content {
+        margin-left: 0;
+        padding-bottom: 20px;
+    }
+
+    .image-container img {
+        max-width: 80%;
+    }
+}

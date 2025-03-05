@@ -1,0 +1,123 @@
+<app-seller-nav></app-seller-nav>
+<h2>Welcome, {{ currentUser }}</h2>
+
+<div class="product-container">
+ 
+  <div>    
+    <div class="add-product-nav">    
+      <button (click)="toggleProductForm()">Add Product</button>
+      <img src="/assets/circle.png" class="outStock" alt="outStock" (click)="toggleLowStockProducts()">
+    </div>
+
+    <form *ngIf="showProductForm" class="product-form" #productForm="ngForm" (ngSubmit)="addNewProductForSeller()" novalidate>
+
+      <!-- Product Name -->
+      <input type="text" placeholder="Product Name" [(ngModel)]="productName" name="productName" required #addedProductName="ngModel" />
+      <div *ngIf="addedProductName.invalid && addedProductName.touched" class="error">Name is required</div>
+    
+      <!-- Price -->
+      <input type="number" placeholder="Price" [(ngModel)]="productPrice" name="productPrice" required #addedProductPrice="ngModel"  (click)=validatePrice()/>
+      <div *ngIf="addedProductPrice.invalid && addedProductPrice.touched" class="error">Price is required</div>
+    
+      <!-- Description -->
+      <input type="text" placeholder="Description" [(ngModel)]="productDescription" name="productDescription" required #addedProductDescription="ngModel" />
+      <div *ngIf="addedProductDescription.invalid && addedProductDescription.touched" class="error">Description is required</div>
+    
+      <!-- Quantity -->
+      <input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="quantity" required #addedProductQuantity="ngModel" (click)= validateQuantity()/>
+      <div *ngIf="addedProductQuantity.invalid && addedProductQuantity.touched" class="error">Quantity is required</div>
+    
+      <!-- Category Selection -->
+      <select [(ngModel)]="productCategory" name="productCategory" required #addedProductCategory="ngModel" (change)="onCategoryChange()">
+        <option value="" disabled selected>Select Category</option>
+        <ng-container *ngFor="let category of categories">
+          <ng-template [ngIf]="!category.data.isDeleted==true">
+            <option [value]="category.data.categoryName">
+              {{ category.data.categoryName }}
+            </option>
+          </ng-template>
+        </ng-container>
+      </select>
+      <div *ngIf="addedProductCategory.invalid && addedProductCategory.touched" class="error">Please choose a category</div>
+    
+      <!-- Barcode Type (Disabled) -->
+      <input type="text" placeholder="Barcode Type" [(ngModel)]="selectedBarcodeType" name="barcodeType" disabled />
+    
+      <!-- Submit & Cancel Buttons -->
+      <button type="submit" [disabled]="productForm.invalid">Submit Product</button>
+      <button type="button" (click)="cancelProductForm()">Cancel</button>
+    
+    </form>
+</div>    
+
+  <!-- Display Products -->
+  <div class="product-list">
+    <div *ngFor="let product of filteredProducts" class="product-card" [ngClass]="{'hidden': currentCategory !== 'null' && currentCategory !== product.data.category}">
+      <div *ngIf="editingProduct && editingProduct._id === product._id; else viewMode">
+        <form  #editProductForm="ngForm" novalidate>
+          <input type="text" placeholder="Product Name" [(ngModel)]="productName" name="productName" required disabled />
+          <input type="number" placeholder="Price" [(ngModel)]="productPrice" name="productPrice" 
+          required #price="ngModel" min="1"/>
+   <div *ngIf="price.invalid && (price.touched || price.dirty)" class="error">
+     <span *ngIf="price.errors?.['required']">Price is required</span>
+     <span *ngIf="price.errors?.['min']">Price must be greater than zero</span>
+   </div>
+   <input type="text" placeholder="Description" [(ngModel)]="productDescription" name="productDescription" 
+   required #description="ngModel" minlength="3"/>
+<div *ngIf="description.invalid && (description.touched || description.dirty)" class="error">
+<span *ngIf="description.errors?.['required']">Description is required</span>
+<span *ngIf="description.errors?.['minlength']">Must be at least 3 characters</span>
+</div>
+
+<input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="quantity" 
+required #quantityField="ngModel" min="1"/>
+<div *ngIf="quantityField.invalid && (quantityField.touched || quantityField.dirty)" class="error">
+<span *ngIf="quantityField.errors?.['required']">Quantity is required</span>
+<span *ngIf="quantityField.errors?.['min']">Must be at least 1</span>
+</div>
+<input type="text" placeholder="Category" [(ngModel)]="productCategory" name="category" 
+required #category="ngModel"/>
+<div *ngIf="category.invalid && (category.touched || category.dirty)" class="error">
+<span *ngIf="category.errors?.['required']">Category is required</span>
+</div>
+
+          
+          <button type="update" (click)="updateProduct()" [disabled]="editProductForm.invalid  || !editProductForm.form.dirty">Update Product</button>
+          <button type="button" (click)="cancelEdit()">Cancel</button>
+        </form>
+      </div>
+
+      <ng-template #viewMode>
+        <ng-container *ngIf="product.data &&(currentCategory === 'null' || currentCategory === product.data.category)">
+          <img class="edit-img" src="/assets/edit.png" (click)="editProduct(product)" alt="edit">
+          <img class="delete-img" src="/assets/trash.png" (click)="deleteProduct(product)" alt="delete">
+          
+          <h3>{{ product.data.productName }}</h3>
+          <p><strong>Price:</strong> ${{ product.data.productPrice }}</p>
+          <p><strong>Description:</strong> {{ product.data.productDescription }}</p>
+          <p><strong>Quantity:</strong> {{ product.data.quantity }}</p>
+          <p><strong>Category:</strong> {{ product.data.category }}</p>
+          <p><strong>Status:</strong> {{ product.data.status }}</p>
+          
+          <img [src]="product.data.barcodeUrl" alt="Barcode" class="barcode-img" />
+          <button (click)="printBarcode(product.data.barcodeUrl)">Print</button>
+
+        </ng-container>
+      </ng-template>
+    </div>
+  </div>
+
+
+  <div class="low-stock-container" *ngIf="showLowStockProducts && lowStockProducts.length > 0">
+    <a class="cancel-btn" (click)="cancelRefill()">X</a>
+    <h4>Low Stock Products</h4>
+    <div *ngFor="let product of lowStockProducts">
+      <div class="product-card">
+        <p>{{ product.data.productName }}</p>
+        <p>Price: {{ product.data.productPrice }}</p>
+        <p>Quantity: {{ product.data.quantity }}</p>
+        <button type="button" (click)="refillProduct(product)">Refill Product</button>
+      </div>
+    </div>
+  </div>
+</div>

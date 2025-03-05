@@ -1,0 +1,77 @@
+<div class="full">
+<div class="register-container">
+  <p class="head">Sign Up</p>
+   
+    <form #sellerRegister="ngForm" novalidate (ngSubmit)="registerUser(sellerRegister)">
+
+    <div class="input">
+      <input type="text" id="name" name="name" #sellerName="ngModel" [(ngModel)]="user.name" placeholder="Enter your name*" (input)="onEmailOrUsernameChange()" required />
+
+      <div *ngIf="sellerName.invalid && (sellerName.touched || sellerName.dirty) || isFormSubmitted">
+        <span *ngIf="sellerName.errors?.['required']">Username is required</span>
+        <span *ngIf="sellerName.errors?.['minlength']">Minimum 4 Characters Needed</span>
+      </div>
+
+    </div>
+
+  
+    <div class="input">
+      <input type="email" id="email" name="email" #sellerEmail="ngModel" [(ngModel)]="user.email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" (input)="onEmailOrUsernameChange()"  placeholder="Email your email*" required/>
+
+      <div *ngIf="emailExists" style="color: red;">Email already exists</div>
+
+      <div *ngIf="sellerEmail.invalid && (sellerEmail.touched || sellerEmail.dirty)|| isFormSubmitted">
+        <span *ngIf="sellerEmail.errors?.['required']">Email is required</span>
+        <span *ngIf="sellerEmail.errors?.['pattern']">Enter the valid email</span>
+      </div><br>
+
+      
+    </div>
+
+     
+
+    <div class="input">
+      <input type="company_name" id="company_name" #company="ngModel" name="company_name"[(ngModel)]="user.companyName" required  placeholder="Enter company name*"/>
+      <div *ngIf="company.invalid && (company.touched || company.dirty)|| isFormSubmitted">
+        <span *ngIf="company.errors?.['required']">Company name is required</span>
+      </div><br>
+    </div>
+
+
+
+  
+    <div class="input">
+      <input type="password" id="password" #passWord="ngModel" name="password" [(ngModel)]="user.password"  (input)="validatePassword()" minlength="8"  placeholder="Enter your password*"     required/>
+
+      <div *ngIf="passWord.invalid && (passWord.touched)|| isFormSubmitted">
+        <span *ngIf="passWord.errors?.['required']">Password is required</span> <br>
+      </div>
+      
+      <div *ngIf="passWord.dirty">
+        <ul >
+          <li [ngClass]="{'invalid': !isPasswordValidLength}">Minimum 8 characters</li>
+          <li [ngClass]="{'invalid': !hasSpecialChar}">Minimum 1 special character</li>
+          <li [ngClass]="{'invalid': !hasCapitalLetter}">Minimum 1 capital letter</li>
+          <li [ngClass]="{'invalid': !hasNumber}">Minimum 1 number</li>
+        </ul>
+      </div>
+    </div>
+    
+
+    <div class="input">
+      <input type="password" id="confirm_password" name="confirm_password"   #right="ngModel" [(ngModel)]="user.confirmPassword" placeholder="Enter confirm password*" required />
+      <div *ngIf="right.invalid && (right.touched || right.dirty) || isFormSubmitted">
+        <span *ngIf="right.errors?.['required']">This field is required</span>
+        <span *ngIf="user.confirmPassword && user.confirmPassword !== user.password">Password does not match</span>
+      </div><br>
+    </div>
+  
+      <button class="button" type="submit" [disabled]="emailExists">Register</button>
+
+      <div class="create-account">
+        <p>Already have an account? <a [routerLink]="['/seller-login']"class="login-link">Sign in here</a></p>
+      </div>
+    </form>
+  </div>
+</div>
+  
