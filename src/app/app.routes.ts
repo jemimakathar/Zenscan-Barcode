@@ -18,7 +18,7 @@ import { DemoComponent } from './Modules/Demo/demo/demo.component';
 
 
 export const routes: Routes = [
-    {path:'',component:HomePageComponent},
+    {path:'',component:HomePageComponent} ,
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'seller-product', component: SellerProductsComponent },
     {path:'seller-login',component:SellerLoginComponent},
