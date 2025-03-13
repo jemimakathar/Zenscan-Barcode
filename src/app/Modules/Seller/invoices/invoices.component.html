@@ -7,18 +7,18 @@
     <table>
       <thead>
         <tr>
+          <th>Date</th>
           <th>Customer Name</th>
           <th>Phone Number</th>
-          <th>Date</th>
           <th>Total Price</th>
           <th>Products</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let bill of billHeaders">
+          <td>{{bill.data.date | date: 'dd-MM-YYYY'}}</td>
           <td>{{ bill.data.customerName }}</td>
           <td>{{ bill.data.customerNo }}</td>
-          <td>{{bill.data.date}}</td>
           <td>{{bill.data.totalAmount | currency:'INR' }}</td>
           <td><button (click)="viewInvoiceDetails(bill)">View Purchased Products</button></td>
         </tr>
@@ -43,28 +43,3 @@
     </ul>
   </div>
 </div>
-
-
-    <!-- <div *ngFor="let bill of billHeaders" class="invoice-card">
-      <h3>{{ bill.data.customerName }}</h3>
-      <p><strong>Total Amount:</strong> {{ bill.data.totalAmount | currency }}</p>
-      <p><strong>Date:</strong> {{ bill.data.date }}</p>
-      <button (click)="viewInvoiceDetails(bill)">View Purchased Product</button>
-    </div>
-  </div> -->
-<!-- Purchased Products Card -->
-<!-- <div *ngIf="selectedInvoices.length > 0" class="purchased-products-card">
-    <div class="header">
-        <h3>Purchased Products</h3>
-        <button class="close-btn" (click)="closePurchasedProducts()">×</button>
-    </div> -->
-  
-    <!-- <ul class="product-list">
-      <li *ngFor="let invoice of selectedInvoices"class="product-item">
-        <span class="product-name"><strong>{{ invoice.product?.data.productName || 'Unknown' }}</strong></span>
-        <span class="product-price">{{ invoice.product?.data.productPrice | currency }}</span>
-        <span class="product-quantity">{{ invoice.data.quantity}}</span>
-      </li>
-    </ul>
-  </div>  
-</div> -->

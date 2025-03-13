@@ -1,0 +1,13 @@
+.dashboard {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .metrics {
+    margin-bottom: 20px;
+  }
+  
+  #chart {
+    width: 100%;
+    height: 300px;
+  }

@@ -1,0 +1,62 @@
+<app-admin-nav></app-admin-nav>
+<div class="container">
+  <h3 class="pricing-heading">Admin Pricing</h3>
+<div class="pricing-container" >
+    <!-- Button to open the modal -->
+  
+    <img src="/assets/plus.png" class="plus-icon" (click)="openForm()">
+  
+    <!-- Modal for the form -->         
+    <div class="modal" *ngIf="formVisible">
+      <div class="modal-content">
+        <span class="close-btn" (click)="closeForm()">×</span>
+        <h2> Pricing </h2>
+  
+        <!-- Form with ngForm -->
+        <form #pricingForm="ngForm" (ngSubmit)="addPlan()" novalidate>
+          
+          <label for="planName">Plan</label>
+          <select id="planName" [(ngModel)]="newPlan.data.planName" name="planName" required #planName="ngModel">
+            <option value="" disabled selected>Select Plan</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Yearly">Yearly</option>
+          </select>
+          <div *ngIf="planName.invalid && planName.touched" class="error">Plan is required</div>
+  
+          <label for="description">Description:</label>
+          <textarea id="description" [(ngModel)]="newPlan.data.description" name="description" required #description="ngModel" ></textarea>
+          <div *ngIf="description.invalid && description.touched" class="error">Description is required</div>
+  
+          <label for="price">Price:</label>
+          <input type="number" id="price" [(ngModel)]="newPlan.data.price" name="price" required #price="ngModel" min="1"/>
+          <div *ngIf="price.invalid && price.touched" class="error">Price is required</div>
+  
+          <label for="duration">Duration:</label>
+          <input type="number" id="duration" [(ngModel)]="newPlan.data.duration" name="duration"  required #duration="ngModel" min="1" />
+          <div *ngIf="duration.invalid && duration.touched" class="error">Duration is required</div>
+  
+          <!-- Submit button disabled if form is invalid -->
+          <button type="submit" class="submit-btn" [disabled]="pricingForm.invalid">{{ isEditing ? 'Update Plan' : 'Add Plan' }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards" >
+    <div *ngFor="let plan of fetchAllPlan" >
+      <div class="card">
+        <img src="/assets/trash.png"  (click)="deletePlan(plan)"class="delete-btn"alt="delete-icon">
+        <h4>{{ plan.data.planName }}</h4>
+        <p><strong>Price:</strong> {{ plan.data.price | currency :'INR'}}</p>
+        <p>{{ plan.data.description }}</p>
+        <p><strong>Duration:</strong> {{ plan.data.duration }} months</p>
+        <a class="update-btn"(click)="editPlan(plan)" >update</a>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  
+
+     
+

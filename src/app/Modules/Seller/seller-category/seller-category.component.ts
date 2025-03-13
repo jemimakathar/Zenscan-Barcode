@@ -33,7 +33,6 @@ export class SellerCategoryComponent implements OnInit {
   newCategoryColor = '#000000';
   barcodePreview: any;
   barcodePreviewUrl: string = '';
-
   type = "category"
   categories: any[] = [];
   fetchCategories: any

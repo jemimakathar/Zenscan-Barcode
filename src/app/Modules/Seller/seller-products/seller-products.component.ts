@@ -134,7 +134,7 @@ export class SellerProductsComponent implements AfterContentChecked {
     for (let i = 0; i < digits.length; i++) {
       let num = parseInt(digits[i], 10);
       if (isEan13OrUpca) {
-        sum += (i % 2 === 0) ? num : num * 3; // EAN-13 & UPC-A logic
+        sum += (i % 2 === 0) ? num : num * 3; // EAN-13 & UPC-A logic (odd-1  even-3)
       } else {
         sum += (i % 2 === 0) ? num * 3 : num; // EAN-8 logic
       }
@@ -396,8 +396,6 @@ export class SellerProductsComponent implements AfterContentChecked {
     this.quantity = 1;
     this.productCategory = '';
     
-    
-
   }
 
   // Fetch user details before connecting to the backend
@@ -414,9 +412,6 @@ export class SellerProductsComponent implements AfterContentChecked {
     });
   }
 
-  navigateToBarcode(product: any) {
-    this.connectToBackend(product);
-  }
 
   // Connect to backend for barcode generation
   connectToBackend(product: any) {

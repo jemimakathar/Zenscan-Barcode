@@ -19,7 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
   providers: [HttpClient, AuthenticationService, CouchdbService]
 })
 export class BillingComponent {
-  @ViewChild('scannerContainer', { static: true }) scannerContainer!: ElementRef;
+  @ViewChild('scannerContainer', { static: true }) scannerContainer!: ElementRef;              //Searches for an HTML element with the #scannerContainer reference in your template.
 
   constructor(
   
@@ -37,7 +37,7 @@ export class BillingComponent {
   customerName: string = '';
   customerNo: string = '';
   currentUserId!: string;
-  private detectedListener: any;
+  detectedListener: any;
 
   ngOnInit(): void {
     this.initializeScanner();
@@ -53,7 +53,7 @@ export class BillingComponent {
 
   isValidPhoneNumber(): boolean {
     const phoneNumber = this.customerNo;
-    return phoneNumber.length === 10 && /^\d+$/.test(phoneNumber);
+    return /^[6-9][0-9]{9}$/.test(phoneNumber);
   }
 
   checkCustomer(): void {
@@ -66,7 +66,7 @@ export class BillingComponent {
       this.service.getCustomerByPhone(this.customerNo).subscribe({
         next: (response: any) => {
           console.log("check customer",response);
-          // check coustomer if already purchased
+          // check customer if already purchased
           if (response.rows.length > 0) {
             const customerData = response.rows[0].doc.data;
             this.customerName = customerData.customerName || ''; // Auto-fill the name if customer exists
@@ -84,10 +84,6 @@ export class BillingComponent {
       });
     }
   }
-
-
-
-
 
   initializeScanner(): void {
     if (!Quagga || typeof Quagga.init !== 'function') {
@@ -134,18 +130,22 @@ export class BillingComponent {
     }
   }
 
+  //Prevents duplicate scan detection.
   onBarcodeDetected(result: any): void {
-    if (result && result.codeResult) {
+    if (result && result.codeResult)//i.e barcode number
+    {
+      console.log("result.codeResult.code",result.codeResult.code);  
       this.detectedCode = result.codeResult.code;
       if (this.detectedCode !== this.scannedCode) {
         this.scannedCode = this.detectedCode;
         console.log("Scanned Code:", this.scannedCode);
         this.getAllProducts(this.detectedCode);
-        setTimeout(() => { this.scannedCode = null; }, 1000);
+        setTimeout(() => { this.scannedCode = null; }, 5000);
       }
     }
   }
 
+  // get products as per scanned id
   getAllProducts(scannedBarcode: string): void {
     this.service.getAllProducts().subscribe({
       next: (response: any) => {
@@ -187,6 +187,7 @@ export class BillingComponent {
     }, 0);
   }
 
+  // generate bill
   generateBill(): void {
 
     if (!this.isValidPhoneNumber()) {
@@ -204,6 +205,7 @@ export class BillingComponent {
     }
 
     const billId = `billing_2_${uuidv4()}`;
+    // for bill
     const orderSummary = {
       _id: billId,
       data: {
@@ -221,11 +223,13 @@ export class BillingComponent {
         console.log("Bill header saved:", response);
         this.scannedProducts.forEach((product) => {
           const billingData = {
+            // for invoices
             _id: `invoices_2_${uuidv4()}`,
             data: {
               billId: billId,
               productId: product._id,
               quantity: product.data.quantity,
+              createdAt: new Date().toISOString(),
               type: "invoices"
             }
           };
@@ -249,7 +253,7 @@ export class BillingComponent {
       }
     });
   }
-
+// update product quantity
   updateProductQuantity(product: any): void {
     this.service.getProductById(product._id).subscribe({
       next: (fetchedProduct: any) => {

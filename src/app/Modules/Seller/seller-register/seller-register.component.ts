@@ -71,10 +71,6 @@ export class SellerRegisterComponent {
     });
   }
 
- 
-
- 
-
 
     // Register User with Free Trial
   registerUser(dataRegister: NgForm) {
@@ -84,15 +80,6 @@ export class SellerRegisterComponent {
     if (!dataRegister.valid || !this.confirmPassword() || !this.isPasswordChecked()  || this.emailExists) {
       return;
     }
-    // const trialStartDate = new Date().toISOString();
-    // const trialEndDate = new Date();
-    // trialEndDate.setDate(new Date().getDate() + 1); // 2-day trial
-    // const trialEndDateStr = trialEndDate.toISOString(); // Convert to string // Add 7 days
-
-    // // Store trial info in localStorage
-    // localStorage.setItem('freeTrialStart', trialStartDate);
-    // localStorage.setItem('freeTrialEnd', trialEndDateStr);
-      
         
 
     const data: any = {
@@ -104,11 +91,7 @@ export class SellerRegisterComponent {
         password: this.user.password,
         confirmPassword: this.user.confirmPassword,
         status: "Register",
-        // currentSubscription:false,
-        userStatus: "unblock",
-        // freeTrialStart: trialStartDate, 
-        // freeTrialEnd: trialEndDateStr,
-        
+        userStatus: "unblock",  
         role: 'user',
         type: "user",
       }
@@ -117,11 +100,6 @@ export class SellerRegisterComponent {
     this.authService.registerUser(data).subscribe({
       next: (response) => {
         alert(`🎉 Registration Successful!`);
-              // Store the currentUserId in localStorage
-      // localStorage.setItem('currentUserId', data._id); // Use the generated _id
-      // console.log("currentUserId stored:", data._id);
-      // this.authService.currentUserId = data._id;
-
         this.resetForm();
         this.router.navigate(['/seller-login']);
       },

@@ -146,56 +146,13 @@ export class PricingComponent implements OnInit {
         alert('Subscription successful.');
         localStorage.removeItem('selectedPlanId'); // Clear the selected plan ID from local storage
 
-        // Check if the subscription has already ended
-        // console.log(endDate);
-        // console.log(new Date());
-        // console.log(endDate <= new Date());
-        // if (endDate <= new Date()) {
-
-        //   this.deactivateSubscription(subscriptionData._id);
-        // } 
-
       },
       error: (err) => {
         console.error('Error subscribing:', err);
         alert('Subscription failed.');
       },
     });
-  }  // Deactivate the subscription when it expires
-  // deactivateSubscription(subscriptionId: string) {
-  //   // First, fetch the current subscription document
-  //   this.service.getSubscriptionById(subscriptionId).subscribe({
-  //     next: (subscription) => {
-  //       if (!subscription._rev) {
-  //         console.error('Subscription not found.');
-  //         return;
-  //       }
-
-  //       // Prepare the updated data with the latest `_rev`
-  //       const updatedSubscription = {
-  //         ...subscription, // Spread existing subscription data
-  //         data: {
-  //           ...subscription.data, // Preserve existing data
-  //           currentSubscription: false, // Mark subscription as inactive
-  //         },
-  //         _rev: subscription._rev, // Ensure CouchDB recognizes the update
-  //       };
-
-  //       // Send the updated subscription back to CouchDB
-  //       this.service.updateSubscription(subscriptionId, updatedSubscription).subscribe({
-  //         next: () => {
-  //           console.log('Subscription expired and deactivated.');
-  //         },
-  //         error: (err) => {
-  //           console.error('Error updating subscription:', err);
-  //         },
-  //       });
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching subscription:', err);
-  //     },
-  //   });
-  // }
+  }  
 
   // Cancel the plan selection
   cancelPlan() {

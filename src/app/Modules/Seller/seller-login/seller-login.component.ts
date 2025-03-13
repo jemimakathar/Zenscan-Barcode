@@ -25,7 +25,7 @@ export class SellerLoginComponent {
     readonly service: CouchdbService,
     readonly authService: AuthenticationService,
     readonly router: Router
-  ) { }
+  ) {}
 
   userLogin(userData: NgForm) {
     this.isFormSubmitted = true;
@@ -57,25 +57,24 @@ export class SellerLoginComponent {
           if (user) {
             isAuthenticated = true;
 
-            // Check if the user is blocked
-            if (user.data.userStatus === 'Blocked') {
-              alert('Your account has been blocked by the admin. Please contact support.');
-              return; // Stop login process
-            }
-
             // If user is an admin, skip subscription check
             if (user.data.role === 'admin') {
               alert("✅ Admin login successful!");
+
+              this.authService.setUserData(user.data.username);
+              localStorage.setItem('currentUser', user.data.username);
               this.router.navigate(['/admin-homePage']); // Navigate to Admin Dashboard
               return;
             }
-
             // Store user details in localStorage
-            this.authService.currentUser = user.data.username;
+            this.authService.setUserData(user.data.username);
             this.authService.currentUserId = user._id;
             localStorage.setItem('currentUser', user.data.username);
             localStorage.setItem('currentUserId', user._id);
             console.log("currentUser", user._id);
+
+           
+
 
             // Check subscription status
             this.service.getSubscription().subscribe({

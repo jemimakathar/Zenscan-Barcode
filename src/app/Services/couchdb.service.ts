@@ -159,8 +159,6 @@ export class CouchdbService {
     const url = `${this.baseUrl}/${subscriptionId}`;
     return this.http.get(url, { headers: this.headers });
   }
-
-
 }
 
 

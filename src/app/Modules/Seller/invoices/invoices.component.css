@@ -33,7 +33,7 @@ th, td {
 }
 
 th {
-  background-color: #007bff;
+  background-color: #c23131;
   color: white;
   font-weight: bold;
 }
@@ -43,7 +43,7 @@ tr:hover {
 }
 /* Button Styling */
 button {
-  background-color: #007bff;
+  background-color: #c23131;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -54,7 +54,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #7e3333;
 }
 
 /* Invoice Card */

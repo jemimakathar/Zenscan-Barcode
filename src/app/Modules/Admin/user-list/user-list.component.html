@@ -1,0 +1,42 @@
+<app-admin-nav></app-admin-nav>
+<div class="container"> 
+    <!-- Card for Users List -->
+    <div class="main-card">
+      <div class="card-header">
+        <h3>Users List</h3>
+       
+        <input
+        type="text"
+        [(ngModel)]="searchTerm" (input)="filterUser()" placeholder="Search by name, email, or company..." class="search-bar"
+      />
+      
+      </div>
+      <div class="card-body">
+        <table *ngIf="filteredUsers.length > 0" class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Company</th>
+              <th>Status</th>
+              <th>Subscription</th>
+              <th>Subscribe Plan</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of filteredUsers">
+              <td>{{ user.data.username }}</td>
+              <td>{{ user.data.email }}</td>
+              <td>{{ user.data.company }}</td>
+              <td>{{ user.data.status }}</td>
+              <td>{{user.data.subscriptionStatus}}</td>
+              <td>{{user.data.planName}}</td>
+            </tr>
+    
+          </tbody>
+        </table>
+        <div *ngIf="filteredUsers.length === 0" class="no-data">No users found.</div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+.container {
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    min-height: 100vh;
+  }
+  
+  
+  /* Main Card (Sellers List) */
+  .main-card {
+    margin-left: 20%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .card-header h3 {
+    margin: 0;
+    font-size: 20px;
+    color:  #c42727;
+  }
+  
+  .search-bar {
+    padding: 8px;
+    width: 250px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  .search-bar:focus {
+    border-color: #ff0000;
+  }
+  
+  /* Table Styling */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+  
+  .table th,
+  .table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .table th {
+    background-color: #c23131;
+    color: white;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #c7c2c2;
+  }
+  
+  .no-data {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+  }
+  
+

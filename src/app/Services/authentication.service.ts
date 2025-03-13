@@ -26,19 +26,20 @@ export class AuthenticationService {
 
 
   // LOCAL STORAGE FOR PROFILE
-  // setUserData(name:string)
-  // {
-  // localStorage.setItem("loggedInUser",this.username);
-  // }
+  setUserData(username:string)
+  {
+    this.currentUser=username
+  localStorage.setItem("loggedInUser",username);
+  }
 
-  // getUserData()
-  // {
-  //   localStorage.getItem('loggedInUser');
-  // }
-  // logout() {
-  //   localStorage.removeItem('loggedInUser');
-  // }
-
+  getUserData()
+  {
+    return localStorage.getItem('currentUser')
+  }
+  logout() {
+    this.currentUser = '';
+    localStorage.removeItem('currentUser');
+  }
 
 
 
