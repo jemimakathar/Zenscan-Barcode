@@ -45,7 +45,7 @@ export class SellerCategoryComponent implements OnInit {
 
   ngOnInit() {
     if (typeof window !== 'undefined') {
-      this.currentUser = localStorage.getItem('currentUser') || this.authService.currentUser; // fetch current seller
+      this.currentUser = localStorage.getItem('currentUser') ?? this.authService.currentUser; // fetch current seller
       this.currentUserId = localStorage.getItem('currentUserId') ?? this.authService.currentUserId
       console.log(this.currentUserId);
 

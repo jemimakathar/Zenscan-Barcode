@@ -30,16 +30,18 @@ export class HomePageComponent implements OnInit{
   fetchPlans() {
     this.service.getAllPlans().subscribe({
       next: (data) => {
-        this.plans = data.rows.map((row:any) => row.doc); 
-        this.filterPlans(); // Apply filtering after fetching
-        
+        this.plans = data.rows
+          .map((row: any) => row.doc)
+          .filter((plan: any) => plan.data.deleted !== true); 
+        this.filterPlans(); 
       },
       error: (err) => {
-        // console.error('Error fetching plans:', err);
+        // console.log('Error fetching plans:', err);
         // alert('Failed to load pricing plans.');
       },
     });
   }
+  
 
   togglePricing(): void {
     this.isYearly = !this.isYearly;
@@ -48,7 +50,7 @@ export class HomePageComponent implements OnInit{
 
   filterPlans() {
     this.filteredPlans = this.plans.filter(plan => 
-      this.isYearly ? plan.data.planName === 'Yearly' : plan.data.planName === 'Monthly'
+      this.isYearly ? plan.data.planName === 'Yearly'  : plan.data.planName === 'Monthly' 
     );
   }
 }

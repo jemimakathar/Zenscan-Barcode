@@ -54,7 +54,12 @@ export class InvoicesComponent implements OnInit {
     this.service.getBillingDetailsFromBillHeader().subscribe({
       next: (response: any) => {
         this.billHeaders = response.rows.map((row: any) => row.doc)
-          .filter((bill: any) => bill.data.userId === this.currentUserId);
+          .filter((bill: any) => bill.data.userId === this.currentUserId).sort((a:any,b:any)=>{
+            const dateA =new Date(a.data.date).getTime();
+            const dateB = new Date(b.data.date).getTime();
+            return dateB - dateA;
+
+          })
         console.log('Bill Headers:', this.billHeaders);
       },
       error: (error) => {
@@ -68,8 +73,7 @@ export class InvoicesComponent implements OnInit {
     this.service.getBillingDetailsFromInvoice().subscribe({
       next: (response: any) => {
         this.invoices = response.rows.map((row: any) => row.doc).filter((bill: any) => bill);
-        console.log('Invoices:', this.invoices);
-       
+        console.log('Invoices:', this.invoices);  
       },
       error: (error) => {
         console.error('Error fetching invoices:', error);

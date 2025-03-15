@@ -107,7 +107,7 @@ export class AdminPricingComponent {
       },
       error: (error) => {
         // console.log("Error in fetching Plans");
-        alert("Error in fetching Plans");
+        // alert("Error in fetching Plans");
       }
     });
   }

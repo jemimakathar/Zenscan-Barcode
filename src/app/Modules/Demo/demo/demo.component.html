@@ -2,14 +2,14 @@
   <!-- Navigation Bar -->
   <nav class="navbar">
     <ul>
-      <li (click)="showCategorySection()">Category</li>
-      <li (click)="showProductSection()">Product</li>
+      <li (click)="showCategorySection()" (keydown.enter)="showCategorySection()">Category</li>
+      <li (click)="showProductSection()" (keydown.enter)="showProductSection()">Product</li>
     </ul>
   </nav>
 
   <!-- Category Section -->
   <div class="category-section" *ngIf="showCategory">
-    <img src="/assets/plus.png" alt="plus" (click)="toggleAddCategoryForm()" class="plus-icon">
+    <img src="/assets/plus.png" alt="plus" (click)="toggleAddCategoryForm()" class="plus-icon" (keydown.enter)="toggleAddCategoryForm()">
     <h2>Categories</h2>
     <div class="category-grid">
       <div class="category-card" *ngFor="let category of categories">
@@ -22,51 +22,66 @@
         </div>
       </div>
     </div>
-  
+
     <!-- Add Category Form -->
     <div *ngIf="showAddCategoryForm" class="form-overlay">
       <div class="form-container">
         <a (click)="toggleAddCategoryForm()" class="cancel">X</a>
         <h3>Add New Category</h3>
-        <div class="form-group">
-          <label for="newCategoryName">Category Name</label>
-          <input id="newCategoryName" [(ngModel)]="newCategoryName" placeholder="Category Name">
-        </div>
-        <div class="form-group">
-          <label for="newCategoryBarcodeType">Barcode Type</label>
-          <select id="newCategoryBarcodeType" [(ngModel)]="newCategoryBarcodeType" (change)="generateBarcodePreview()">
-            <option value="ean13">EAN-13</option>
-            <option value="code128">Code 128</option>
-            <option value="upca">UPC-A</option>
-            <option value="ean8">EAN-8</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="newCategorySize">Size</label>
-          <select id="newCategorySize" [(ngModel)]="newCategorySize" (change)="generateBarcodePreview()">
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="newCategoryColor">Color</label>
-          <input type="color" id="newCategoryColor" [(ngModel)]="newCategoryColor" (change)="generateBarcodePreview()">
-        </div>
-        <div class="barcode-preview" [ngClass]="barcodePreview" *ngIf="barcodePreviewUrl">
-          <p>Barcode Preview:</p>
-          <img [src]="barcodePreviewUrl" alt="Barcode Preview"/>
-        </div>
-        <div class="form-actions">
-          <button (click)="addCategory(newCategoryName, newCategoryBarcodeType)">Add Category</button>
-        </div>
+        <form #categoryForm="ngForm" (ngSubmit)="addCategory(categoryForm)">
+          <div class="form-group">
+            <label for="newCategoryName">Category Name</label>
+            <input id="newCategoryName" name="newCategoryName" [(ngModel)]="newCategoryName" required minlength="3" #categoryName="ngModel" placeholder="Category Name">
+            <div *ngIf="categoryName.invalid && (categoryName.touched || categoryName.dirty)" class="error-message">
+              <div *ngIf="categoryName.errors?.['required']">Category Name is required.</div>
+              <div *ngIf="categoryName.errors?.['minlength']">Category Name must be at least 3 characters long.</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newCategoryBarcodeType">Barcode Type</label>
+            <select id="newCategoryBarcodeType" name="newCategoryBarcodeType" [(ngModel)]="newCategoryBarcodeType" required #barcodeType="ngModel" (change)="generateBarcodePreview()">
+              <option value="ean13">EAN-13</option>
+              <option value="code128">Code 128</option>
+              <option value="upca">UPC-A</option>
+              <option value="ean8">EAN-8</option>
+            </select>
+            <div *ngIf="barcodeType.invalid && (barcodeType.touched || barcodeType.dirty)" class="error-message">
+              Barcode Type is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newCategorySize">Size</label>
+            <select id="newCategorySize" name="newCategorySize" [(ngModel)]="newCategorySize" required #size="ngModel" (change)="generateBarcodePreview()">
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+            <div *ngIf="size.invalid && (size.touched || size.dirty)" class="error-message">
+              Size is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newCategoryColor">Color</label>
+            <input type="color" id="newCategoryColor" name="newCategoryColor" [(ngModel)]="newCategoryColor" required #color="ngModel" (change)="generateBarcodePreview()">
+            <div *ngIf="color.invalid && (color.touched || color.dirty)" class="error-message">
+              Color is required.
+            </div>
+          </div>
+          <div class="barcode-preview" [ngClass]="barcodePreview" *ngIf="barcodePreviewUrl">
+            <p>Barcode Preview:</p>
+            <img [src]="barcodePreviewUrl" alt="Barcode Preview" />
+          </div>
+          <div class="form-actions">
+            <button type="submit" [disabled]="categoryForm.invalid">Add Category</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
   <!-- Product Section -->
   <div class="product-section" *ngIf="showProduct">
-    <img src="/assets/plus.png" alt="plus" (click)="toggleAddProductForm()" class="plus-icon">
+    <img src="/assets/plus.png" alt="plus" (click)="toggleAddProductForm()" class="plus-icon" (keydown.enter)="toggleAddProductForm()">
     <h2>Products</h2>
     <div class="product-grid">
       <div class="product-card" *ngFor="let product of isFiltered ? filteredProducts : products">
@@ -75,7 +90,7 @@
         </div>
         <div class="product-details">
           <h3>{{ product.data.productName }}</h3>
-          <p class="price">${{ product.data.productPrice }}</p>
+          <p class="price">{{ product.data.productPrice | currency:'INR' }}</p>
           <p class="quantity">{{ product.data.quantity }} in stock</p>
         </div>
         <div class="product-actions">
@@ -85,75 +100,115 @@
       </div>
     </div>
 
-    <!-- Update Product Form -->
-    <div *ngIf="selectedProduct" class="form-overlay">
-      <div class="form-container">
-        <a (click)="selectedProduct = null" class="cancel">X</a>
-        <h3>Update Product</h3>
-        <div class="form-group">
-          <label for="updatedProductName">Product Name</label>
-          <input id="updatedProductName" [(ngModel)]="updatedProductName" placeholder="Product Name">
-        </div>
-        <div class="form-group">
-          <label for="updatedProductPrice">Price</label>
-          <input id="updatedProductPrice" [(ngModel)]="updatedProductPrice" type="number" placeholder="Price">
-        </div>
-        <div class="form-group">
-          <label for="updatedProductDescription">Description</label>
-          <input id="updatedProductDescription" [(ngModel)]="updatedProductDescription" placeholder="Description">
-        </div>
-        <div class="form-group">
-          <label for="updatedProductQuantity">Quantity</label>
-          <input id="updatedProductQuantity" [(ngModel)]="updatedProductQuantity" type="number" placeholder="Quantity">
-        </div>
-        <div class="form-group">
-          <label for="updatedProductCategory">Category</label>
-          <select id="updatedProductCategory" [(ngModel)]="updatedProductCategory">
-            <option value="">Select Category</option>
-            <option *ngFor="let category of categories" [value]="category.data.categoryName">{{ category.data.categoryName }}</option>
-          </select>
-        </div>
-        <div class="form-actions">
-          <button (click)="updateProduct()">Update Product</button>   
-        </div>
-      </div>
-    </div>
-
     <!-- Add Product Form -->
     <div *ngIf="showAddProductForm" class="form-overlay">
       <div class="form-container">
         <a (click)="toggleAddProductForm()" class="cancel">X</a>
         <h3>Add Product</h3>
-        <div class="form-group">
-          <label for="newProductName">Product Name</label>
-          <input id="newProductName" [(ngModel)]="newProductName" placeholder="Product Name">
-        </div>
-        <div class="form-group">
-          <label for="newProductPrice">Price</label>
-          <input id="newProductPrice" [(ngModel)]="newProductPrice" type="number" placeholder="Price" min="1">
-        </div>
-        <div class="form-group">
-          <label for="newProductDescription">Description</label>
-          <input id="newProductDescription" [(ngModel)]="newProductDescription" placeholder="Description">
-        </div>
-        <div class="form-group">
-          <label for="newProductQuantity">Quantity</label>
-          <input id="newProductQuantity" [(ngModel)]="newProductQuantity" type="number" placeholder="Quantity">
-        </div>
-        <div class="form-group">
-          <label for="newProductCategory">Category</label>
-          <select id="newProductCategory" [(ngModel)]="newProductCategory" (change)="onCategoryChange()">
-            <option value="">Select Category</option>
-            <option *ngFor="let category of categories" [value]="category.data.categoryName">{{ category.data.categoryName }}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="newProductBarcodeType">Barcode Type</label>
-          <input id="newProductBarcodeType" [(ngModel)]="newProductBarcodeType" placeholder="Barcode Type" readonly>
-        </div>
-        <div class="form-actions">
-          <button (click)="addProduct(newProductName, newProductPrice, newProductDescription, newProductQuantity, newProductCategory)">Add Product</button>
-        </div>
+        <form #productForm="ngForm" (ngSubmit)="addProduct(productForm)">
+          <div class="form-group">
+            <label for="newProductName">Product Name</label>
+            <input id="newProductName" name="newProductName" [(ngModel)]="newProductName" required minlength="3" #productName="ngModel" placeholder="Product Name">
+            <div *ngIf="productName.invalid && (productName.touched || productName.dirty)" class="error-message">
+              <div *ngIf="productName.errors?.['required']">Product Name is required.</div>
+              <div *ngIf="productName.errors?.['minlength']">Product Name must be at least 3 characters long.</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newProductPrice">Price</label>
+            <input id="newProductPrice" name="newProductPrice" [(ngModel)]="newProductPrice" required type="number" min="1" #productPrice="ngModel" placeholder="Price">
+            <div *ngIf="productPrice.invalid && (productPrice.touched || productPrice.dirty)" class="error-message">
+              <div *ngIf="productPrice.errors?.['required']">Price is required.</div>
+              <div *ngIf="productPrice.errors?.['min']">Price must be at least 1.</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newProductDescription">Description</label>
+            <input id="newProductDescription" name="newProductDescription" [(ngModel)]="newProductDescription" required #productDescription="ngModel" placeholder="Description">
+            <div *ngIf="productDescription.invalid && (productDescription.touched || productDescription.dirty)" class="error-message">
+              Description is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newProductQuantity">Quantity</label>
+            <input id="newProductQuantity" name="newProductQuantity" [(ngModel)]="newProductQuantity" required type="number" min="1" #productQuantity="ngModel" placeholder="Quantity">
+            <div *ngIf="productQuantity.invalid && (productQuantity.touched || productQuantity.dirty)" class="error-message">
+              <div *ngIf="productQuantity.errors?.['required']">Quantity is required.</div>
+              <div *ngIf="productQuantity.errors?.['min']">Quantity must be at least 1.</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newProductCategory">Category</label>
+            <select id="newProductCategory" name="newProductCategory" [(ngModel)]="newProductCategory" required #productCategory="ngModel" (change)="onCategoryChange()">
+              <option value="">Select Category</option>
+              <option *ngFor="let category of categories" [value]="category.data.categoryName">{{ category.data.categoryName }}</option>
+            </select>
+            <div *ngIf="productCategory.invalid && (productCategory.touched || productCategory.dirty)" class="error-message">
+              Category is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newProductBarcodeType">Barcode Type</label>
+            <input id="newProductBarcodeType" name="newProductBarcodeType" [(ngModel)]="newProductBarcodeType" placeholder="Barcode Type" readonly>
+          </div>
+          <div class="form-actions">
+            <button type="submit" [disabled]="productForm.invalid">Add Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Update Product Form -->
+    <div *ngIf="selectedProduct" class="form-overlay">
+      <div class="form-container">
+        <a (click)="selectedProduct = null" class="cancel">X</a>
+        <h3>Update Product</h3>
+        <form #updateProductForm="ngForm" (ngSubmit)="updateProduct(updateProductForm)">
+          <div class="form-group">
+            <label for="updatedProductName">Product Name</label>
+            <input id="updatedProductName" name="updatedProductName" [(ngModel)]="updatedProductName" required minlength="3" #updatedProductNameInput="ngModel" placeholder="Product Name">
+            <div *ngIf="updatedProductNameInput.invalid && (updatedProductNameInput.touched || updatedProductNameInput.dirty)" class="error-message">
+              <div *ngIf="updatedProductNameInput.errors?.['required']">Product Name is required.</div>
+              <div *ngIf="updatedProductNameInput.errors?.['minlength']">Product Name must be at least 3 characters long.</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="updatedProductPrice">Price</label>
+            <input id="updatedProductPrice" name="updatedProductPrice" [(ngModel)]="updatedProductPrice" required type="number" min="1" #updatedProductPriceInput="ngModel" placeholder="Price">
+            <div *ngIf="updatedProductPriceInput.invalid && (updatedProductPriceInput.touched || updatedProductPriceInput.dirty)" class="error-message">
+              <div *ngIf="updatedProductPriceInput.errors?.['required']">Price is required.</div>
+              <div *ngIf="updatedProductPriceInput.errors?.['min']">Price must be at least 1.</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="updatedProductDescription">Description</label>
+            <input id="updatedProductDescription" name="updatedProductDescription" [(ngModel)]="updatedProductDescription" required #updatedProductDescriptionInput="ngModel" placeholder="Description">
+            <div *ngIf="updatedProductDescriptionInput.invalid && (updatedProductDescriptionInput.touched || updatedProductDescriptionInput.dirty)" class="error-message">
+              Description is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="updatedProductQuantity">Quantity</label>
+            <input id="updatedProductQuantity" name="updatedProductQuantity" [(ngModel)]="updatedProductQuantity" required type="number" min="1" #updatedProductQuantityInput="ngModel" placeholder="Quantity">
+            <div *ngIf="updatedProductQuantityInput.invalid && (updatedProductQuantityInput.touched || updatedProductQuantityInput.dirty)" class="error-message">
+              <div *ngIf="updatedProductQuantityInput.errors?.['required']">Quantity is required.</div>
+              <div *ngIf="updatedProductQuantityInput.errors?.['min']">Quantity must be at least 1.</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="updatedProductCategory">Category</label>
+            <select id="updatedProductCategory" name="updatedProductCategory" [(ngModel)]="updatedProductCategory" required #updatedProductCategoryInput="ngModel">
+              <option value="">Select Category</option>
+              <option *ngFor="let category of categories" [value]="category.data.categoryName">{{ category.data.categoryName }}</option>
+            </select>
+            <div *ngIf="updatedProductCategoryInput.invalid && (updatedProductCategoryInput.touched || updatedProductCategoryInput.dirty)" class="error-message">
+              Category is required.
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" [disabled]="updateProductForm.invalid">Update Product</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

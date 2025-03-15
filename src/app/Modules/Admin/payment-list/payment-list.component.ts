@@ -71,9 +71,8 @@ export class PaymentListComponent {
     this.service.getAllPlans().subscribe({
       next:(response)=>{
         this.planDetails=response.rows.map((row:any)=>row.doc)
-        console.log(this.planDetails);
-        
-         this.mapSubscriptionDetailsToUsers(); 
+        console.log(this.planDetails);  
+        this.mapSubscriptionDetailsToUsers(); 
       }
     })
   }
@@ -101,8 +100,12 @@ export class PaymentListComponent {
           return null; // Remove users with "No Payment" and "No Plan"
         }
       })
-      .filter(user => user !== null); // Remove null values
-  
+      .filter(user => user !== null)// Remove null values
+      .sort((a:any,b:any)=>{
+        const dateA = new Date(a.data.subscriptionDate).getTime();
+        const dateB = new Date(b.data.subscriptionDate).getTime();
+        return dateB - dateA;
+      })
     console.log("Filtered Users:", this.filteredUsers);
   }  
 }

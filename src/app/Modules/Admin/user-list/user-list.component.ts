@@ -80,8 +80,6 @@ export class UserListComponent {
 
 
   mapSubscriptionDetailsToUsers() {
-    
-    
     this.filteredUsers.forEach((user, indexValue) => {
       const subscription = this.subscriptionDetails.find(users => users.data.userId === user._id);
 

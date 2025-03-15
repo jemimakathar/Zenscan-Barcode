@@ -93,7 +93,6 @@ export class CouchdbService {
 
 
   // billing service
-
   saveBillingDetails(billing:any)
   {
     const url =`${this.baseUrl}`;

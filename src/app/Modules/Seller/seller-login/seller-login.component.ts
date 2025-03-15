@@ -73,8 +73,6 @@ export class SellerLoginComponent {
             localStorage.setItem('currentUserId', user._id);
             console.log("currentUser", user._id);
 
-           
-
 
             // Check subscription status
             this.service.getSubscription().subscribe({

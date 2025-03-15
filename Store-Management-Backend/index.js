@@ -33,7 +33,7 @@ app.get('/generate-barcode/:id', (req, res) => {
         scale: scale,
         height: 10,
         includetext: true,
-        textxalign: 'center',
+        textalign: 'center',
         backgroundcolor: 'ffffff',
         barcolor: color.replace('#', ''),
     }, (err, png) => {

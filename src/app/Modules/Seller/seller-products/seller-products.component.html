@@ -6,7 +6,7 @@
   <div>
     <div class="add-product-nav">
       <button (click)="toggleProductForm()">Add Product</button>
-      <img src="/assets/circle.png" class="outStock" alt="outStock" (click)="toggleLowStockProducts()">
+      <img src="/assets/circle.png" class="outStock" alt="outStock" (click)="toggleLowStockProducts()" (keydown.enter)="toggleLowStockProducts()">
     </div>
 
     <form *ngIf="showProductForm" class="product-form" #productForm="ngForm" (ngSubmit)="addNewProductForSeller()"
@@ -100,8 +100,8 @@
 
       <ng-template #viewMode>
         <ng-container *ngIf="product.data &&(currentCategory === 'null' || currentCategory === product.data.category)">
-          <img class="edit-img" src="/assets/edit.png" (click)="editProduct(product)" alt="edit">
-          <img class="delete-img" src="/assets/trash.png" (click)="deleteProduct(product)" alt="delete">
+          <img class="edit-img" src="/assets/edit.png" (click)="editProduct(product)" (keydown.enter)="editProduct(product)" alt="edit" >
+          <img class="delete-img" src="/assets/trash.png" (click)="deleteProduct(product)"(keydown.enter)="deleteProduct(product)" alt="delete">
 
           <h3>{{ product.data.productName }}</h3>
           <p><strong>Price:</strong>{{ product.data.productPrice | currency :'INR'}}</p>

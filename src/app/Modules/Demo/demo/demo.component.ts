@@ -28,8 +28,8 @@ export class DemoComponent implements OnInit {
 
   // Mock data for products
   products: any[] = [
-    { _id: 'product_1', data: { productName: 'Laptop', productPrice: 1200, productDescription: 'High-end gaming laptop', quantity: 10, category: 'Electronics', barcodeUrl:'http://localhost:3000/barcodes/8939385308208_ean13_medium_000000.png', barcodeType: 'ean13', barcodeSize: 'medium', barcodeColor: '#000000', isDeleted: false } },
-    { _id: 'product_2', data: { productName: 'T-Shirt', productPrice: 20, productDescription: 'Cotton T-Shirt', quantity: 50, category: 'Clothing', barcodeUrl:'http://localhost:3000/barcodes/356789231_code128_medium_000000.png', barcodeType: 'code128', barcodeSize: 'medium', barcodeColor: '#000000', isDeleted: false } }
+    { _id: 'product_1', data: { productName: 'Laptop', productPrice: 12000, productDescription: 'High-end gaming laptop', quantity: 10, category: 'Electronics', barcodeUrl: 'http://localhost:3000/barcodes/8939385308208_ean13_medium_000000.png', barcodeType: 'ean13', barcodeSize: 'medium', barcodeColor: '#000000', isDeleted: false } },
+    { _id: 'product_2', data: { productName: 'T-Shirt', productPrice: 500, productDescription: 'Cotton T-Shirt', quantity: 50, category: 'Clothing', barcodeUrl: 'http://localhost:3000/barcodes/356789231_code128_medium_000000.png', barcodeType: 'code128', barcodeSize: 'medium', barcodeColor: '#000000', isDeleted: false } }
   ];
 
   // Properties for adding a new category
@@ -48,7 +48,6 @@ export class DemoComponent implements OnInit {
   newProductCategory: string = '';
   newProductBarcodeType: string = '';
 
-
   // Properties for updating a product
   selectedProduct: any = null;
   updatedProductName: string = '';
@@ -60,10 +59,7 @@ export class DemoComponent implements OnInit {
   showCategory: boolean = true;
   showProduct: boolean = false;
   showAddProductForm: boolean = false;
-  showAddCategoryForm:boolean=false;
-
-
-
+  showAddCategoryForm: boolean = false;
 
   // Property to store filtered products based on category
   filteredProducts: any[] = [];
@@ -86,17 +82,16 @@ export class DemoComponent implements OnInit {
     this.isFiltered = false; // Reset filter when switching to product section
     this.filteredProducts = []; // Clear filtered products
   }
+
   toggleAddProductForm() {
     this.showAddProductForm = !this.showAddProductForm;
   }
-  toggleAddCategoryForm()
-  {
-    this.showAddCategoryForm =!this.showAddCategoryForm
-  }
-  
 
-  showProductByCategory()
-  {
+  toggleAddCategoryForm() {
+    this.showAddCategoryForm = !this.showAddCategoryForm;
+  }
+
+  showProductByCategory() {
     this.showCategory = false;
     this.showProduct = true;
   }
@@ -138,25 +133,35 @@ export class DemoComponent implements OnInit {
     });
   }
 
-  addCategory(categoryName: string, barcodeType: string) {
+  addCategory(form: any) {
+    if (form.invalid) {
+      alert('Please fill out the form correctly.');
+      return;
+    }
+
     const newCategory = {
       _id: `category_${uuidv4()}`,
       data: {
-        categoryName,
-        barcodeType,
+        categoryName: this.newCategoryName,
+        barcodeType: this.newCategoryBarcodeType,
         barcodeUrl: '',
-        barcodeSize: 'medium',
-        barcodeColor: '#000000',
+        barcodeSize: this.newCategorySize,
+        barcodeColor: this.newCategoryColor,
         isDeleted: false
       }
     };
     this.categories.push(newCategory);
-    this.resetCategoryForm()
+    this.resetCategoryForm();
     alert('Category added successfully (demo mode)');
   }
 
-  addProduct(productName: string, productPrice: number, productDescription: string, quantity: number, category: string) {
-    const selectedCategory = this.categories.find(cat => cat.data.categoryName === category);
+  addProduct(form: any) {
+    if (form.invalid) {
+      alert('Please fill out the form correctly.');
+      return;
+    }
+
+    const selectedCategory = this.categories.find(cat => cat.data.categoryName === this.newProductCategory);
     if (!selectedCategory) {
       alert('Selected category not found');
       return;
@@ -192,13 +197,13 @@ export class DemoComponent implements OnInit {
         const newProduct = {
           _id: `product_${uuidv4()}`,
           data: {
-            productName,
-            productPrice,
-            productDescription,
-            quantity,
-            category,
+            productName: this.newProductName,
+            productPrice: this.newProductPrice,
+            productDescription: this.newProductDescription,
+            quantity: this.newProductQuantity,
+            category: this.newProductCategory,
             barcodeUrl: response.barcodeUrl,
-            productBarcodeType,
+            barcodeType: productBarcodeType,
             barcodeSize: size,
             barcodeColor: '#000000',
             isDeleted: false
@@ -229,7 +234,6 @@ export class DemoComponent implements OnInit {
     }
   }
 
-  // Method to select a product for updating
   selectProductForUpdate(productId: string) {
     this.showAddProductForm = false;
     this.selectedProduct = this.products.find(product => product._id === productId);
@@ -242,8 +246,12 @@ export class DemoComponent implements OnInit {
     }
   }
 
-  // Method to update a product
-  updateProduct() {
+  updateProduct(form: any) {
+    if (form.invalid) {
+      alert('Please fill out the form correctly.');
+      return;
+    }
+
     if (!this.selectedProduct) {
       alert('No product selected for update');
       return;
@@ -265,28 +273,26 @@ export class DemoComponent implements OnInit {
     this.selectedProduct = null; // Reset selected product
   }
 
-  // Method to filter products based on category
   viewProductsByCategory(categoryName: string) {
     this.filteredProducts = this.products.filter(product => product.data.category === categoryName);
     this.isFiltered = true; // Set filtered state to true
     this.showProductByCategory(); // Switch to the product section
   }
-  resetProductForm()
-  {
-  this.newProductName = '';
-  this.newProductPrice = 0;
-  this.newProductDescription = '';
-  this.newProductQuantity = 0;
-  this.newProductCategory = '';
-  this.newProductBarcodeType = '';
-  this.showAddProductForm = false;
+
+  resetProductForm() {
+    this.newProductName = '';
+    this.newProductPrice = 0;
+    this.newProductDescription = '';
+    this.newProductQuantity = 0;
+    this.newProductCategory = '';
+    this.newProductBarcodeType = '';
+    this.showAddProductForm = false;
   }
 
-  resetCategoryForm()
-  {
-    this.showAddCategoryForm=false;
-    this.newCategoryName= '';
-    this.newCategorySize='';
-    this.newCategoryColor='';
+  resetCategoryForm() {
+    this.showAddCategoryForm = false;
+    this.newCategoryName = '';
+    this.newCategorySize = '';
+    this.newCategoryColor = '';
   }
 }

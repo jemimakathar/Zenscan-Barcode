@@ -17,14 +17,13 @@ import { AuthenticationService } from '../../../Services/authentication.service'
 })
 export class SellerHomePageComponent {
   currentUser!: string;
-  currentUserId!: string;
 
   constructor(readonly router: Router, readonly http: HttpClient,readonly authService:AuthenticationService) { }
 
 
   ngOnInit() {
     if (typeof window !== 'undefined') {
-      this.currentUser = localStorage.getItem('currentUser') || this.authService.currentUser;
+      this.currentUser = localStorage.getItem('currentUser') ?? this.authService.currentUser;
       
       if (!this.currentUser) {
         this.router.navigate(['/seller-login']); 

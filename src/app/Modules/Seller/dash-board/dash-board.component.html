@@ -1,0 +1,37 @@
+<!-- dash-board.component.html -->
+<app-seller-nav></app-seller-nav>
+
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h2 class="heading">Welcome, {{ currentUser }}</h2>
+    <h2>Sales Analytics</h2>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="chart-container">
+      <div class="chart-header">
+        <label for="chart-select">Chart View</label><br>
+        <select id="chart-select" [(ngModel)]="selectedChart" (change)="onChartTypeChange()">
+          <option value="7days">Past 7 Days</option>
+          <option value="monthly">Monthly Comparison</option>
+        </select>
+      </div>
+
+      <div *ngIf="selectedChart === '7days'" id="past-7-days-chart" class="chart"></div>
+      <div *ngIf="selectedChart === 'monthly'" id="monthly-comparison-chart" class="chart"></div>
+    </div>
+
+    <div class="top-products-container">
+      <h3>Top Selling Products</h3>
+      <div class="products-list">
+        <div *ngFor="let product of topProducts" class="product-item">
+          <span class="product-name">{{ product.productName }}</span>
+          <span class="product-quantity">{{ product.totalQuantity }}</span>
+        </div>
+        <div *ngIf="topProducts.length === 0" class="no-products">
+          No sales data available
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,8 +7,7 @@
        
         <input
         type="text"
-        [(ngModel)]="searchTerm" (input)="filterUser()" placeholder="Search by name, email, or company..." class="search-bar"
-      />
+        [(ngModel)]="searchTerm" (input)="filterUser()" placeholder="Search by name, email, or company..." class="search-bar"/>
       
       </div>
       <div class="card-body">
@@ -18,7 +17,6 @@
               <th>Name</th>
               <th>Email</th>
               <th>Company</th>
-              <th>Status</th>
               <th>Subscription</th>
               <th>Subscribe Plan</th>
              
@@ -29,7 +27,6 @@
               <td>{{ user.data.username }}</td>
               <td>{{ user.data.email }}</td>
               <td>{{ user.data.company }}</td>
-              <td>{{ user.data.status }}</td>
               <td>{{user.data.subscriptionStatus}}</td>
               <td>{{user.data.planName}}</td>
             </tr>

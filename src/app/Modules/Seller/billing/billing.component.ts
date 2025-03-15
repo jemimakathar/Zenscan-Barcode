@@ -244,8 +244,7 @@ export class BillingComponent {
           });
         });
         alert("Bill generated successfully!");
-        this.scannedProducts = [];
-        this.totalCost = 0;
+        this.resetForm()
       },
       error: (error) => {
         console.error("Error saving billing details:", error);
@@ -287,4 +286,14 @@ export class BillingComponent {
       error: (error) => console.error("Error fetching product:", error),
     });
   }
+
+  resetForm(): void {
+    this.customerName = '';
+    this.customerNo = '';
+    this.scannedProducts = [];
+    this.totalCost = 0;
+    this.scannedCode = null;
+    this.selectedProduct = null;
+  }
+  
 }

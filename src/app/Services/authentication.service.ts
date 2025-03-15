@@ -75,7 +75,4 @@ export class AuthenticationService {
   getSellerById(sellerId: string) {
     return this.http.get(`${this.baseUrl}/${sellerId}`);
   }
-
-
-
 }

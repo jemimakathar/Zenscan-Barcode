@@ -39,7 +39,7 @@ export class SellerProductsComponent implements AfterContentChecked {
 
   data: any = [];
 
-  categories: any[] = []; // categories: string[] = []; // List of categories
+  categories: any[] = [];  // List of categories
   selectedCategory: string = ''; // Selected category for filtering
   selectedBarcodeType: string = 'ean-13';
   selectedBarcodeSize: any
@@ -63,8 +63,8 @@ export class SellerProductsComponent implements AfterContentChecked {
 
   ngOnInit() {
     if (typeof window !== 'undefined') {
-      this.currentUser = localStorage.getItem('currentUser') || this.authService.currentUser;
-      this.currentUserId = localStorage.getItem('currentUserId') || this.authService.currentUserId
+      this.currentUser = localStorage.getItem('currentUser') ?? this.authService.currentUser;
+      this.currentUserId = localStorage.getItem('currentUserId') ?? this.authService.currentUserId
       console.log("currentSeller", this.currentUserId);
 
       if (!this.currentUser) {
@@ -72,7 +72,7 @@ export class SellerProductsComponent implements AfterContentChecked {
         return;
       }
 
-      this.getAllProducts(1);    //if the value is 1 products  connect to Backend  0 not connected
+      this.getAllProducts();
       this.fetchUserDetails();
       this.fetchCategories();
 
@@ -209,7 +209,6 @@ export class SellerProductsComponent implements AfterContentChecked {
     this.generatedProductId = this.generateProductId(this.selectedBarcodeType);
 
     this.data = {
-
       _id: `product_2_${uuidv4()}`,
       data:
       {
@@ -234,7 +233,7 @@ export class SellerProductsComponent implements AfterContentChecked {
 
 
   // GET all products from service, exclude soft deleted products
-  getAllProducts(value: number) {
+  getAllProducts() {
     this.service.getAllProducts().subscribe({
       next: (response: any) => {
         // Filter out products that are marked as deleted
@@ -295,7 +294,7 @@ export class SellerProductsComponent implements AfterContentChecked {
     this.showForm = true; 
   
     // Move the clicked product to the front of the list
-    const index = this.userProducts.indexOf(product);
+    const index = this.userProducts.indexOf(product);//index of the product
     if (index !== -1) {
       this.userProducts.unshift(this.userProducts.splice(index, 1)[0]);
     }
@@ -315,7 +314,7 @@ export class SellerProductsComponent implements AfterContentChecked {
   
   // Update an existing product or restore a soft-deleted product
   updateProduct() {
-    if (!this.editingProduct || !this.editingProduct._id) {
+    if (!this.editingProduct?._id) {
       alert("No product selected for editing.");
       return;
     }
@@ -341,7 +340,7 @@ export class SellerProductsComponent implements AfterContentChecked {
           this.userProducts[index] = updatedData; // Update the product in the list
         }
         alert("Product updated successfully!");
-        this.getAllProducts(1); // Refresh the product list
+        this.getAllProducts(); // Refresh the product list
         this.cancelEdit(); // Close the form
       },
       error: (error) => {
@@ -378,7 +377,7 @@ export class SellerProductsComponent implements AfterContentChecked {
         // Remove the product from the UI list, as it is marked as deleted
         this.userProducts = this.userProducts.filter((p: any) => p._id !== productId);
         alert('Product deleted Successfully');
-        this.getAllProducts(1); // Refresh the product list to reflect the changes
+        this.getAllProducts(); // Refresh the product list to reflect the changes
       },
       error: (error) => {
         console.error('Error marking product as deleted:', error);
@@ -439,7 +438,7 @@ export class SellerProductsComponent implements AfterContentChecked {
             alert('Product added successfully!');
             this.cancelProductForm()
             this.resetProductForm();    
-            this.getAllProducts(0);
+            this.getAllProducts();
           },
           error: (error) => {
             alert('Error adding product.');
