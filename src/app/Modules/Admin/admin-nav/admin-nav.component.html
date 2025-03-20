@@ -1,7 +1,35 @@
 <ul class="navbar-links" id="navbarLinks">
-    <app-profile></app-profile>
+      <!-- Profile Section -->
+      <li class="profile-section" *ngIf="username">
+        <div class="profile-info">
+          <div class="profile-circle">
+            {{ getInitial() }}
+          </div>
+          <span class="username">{{ username }}</span>
+        </div>
+      </li>
+
+       <!-- Navigation Links -->
     <li><a class="nav-link" routerLink="/admin-homePage" routerLinkActive="active"><img src="/assets/home.png" alt="Home">Home</a></li>
     <li><a class="nav-link" routerLink="/admin-pricing" routerLinkActive="active"><img src="/assets/task-actions.png" alt="Pricing">Pricing</a></li>
     <li><a class="nav-link" routerLink="/admin-userList" routerLinkActive="active"><img src="/assets/group.png" alt="User">User List</a></li>
     <li><a class="nav-link" routerLink="/payment" routerLinkActive="active"><img src="/assets/piggy-bank.png" alt="Payment List">Payment List</a></li>
+
+    <li class="logout-item">
+        <a class="nav-link" (click)="openLogoutConfirmation()">
+          <img src="assets/logout.png" alt="Logout">
+          <span>Logout</span>
+        </a>
+      </li>
 </ul>
+
+ <!-- Logout Confirmation Modal -->
+ <div *ngIf="showLogoutConfirmation" class="modal-overlay">
+    <div class="modal-content">
+      <p>Are you sure you want to logout?</p>
+      <div class="modal-buttons">
+        <button (click)="confirmLogout()">Yes</button>
+        <button (click)="cancelLogout()">No</button>
+      </div>
+    </div>
+  </div>

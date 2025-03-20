@@ -26,15 +26,22 @@ export class AuthenticationService {
 
 
   // LOCAL STORAGE FOR PROFILE
-  setUserData(username:string)
+  setUserData(username:string,userId:string)
   {
-    this.currentUser=username
+    this.currentUser=username;
+    this.currentUserId = userId;
+
   localStorage.setItem("loggedInUser",username);
+  localStorage.setItem('currentUserId', userId);
   }
 
   getUserData()
   {
     return localStorage.getItem('currentUser')
+  }
+  getUserId()
+  {
+    return localStorage.getItem('currentUserId')
   }
   logout() {
     this.currentUser = '';

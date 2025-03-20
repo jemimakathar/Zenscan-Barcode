@@ -5,21 +5,28 @@
       
       <div class="input">
         <input type="email" name="email" id="email" #user="ngModel" [(ngModel)]="userEmail"  
-          placeholder="Enter your email*" minlength="2" required (input)="emailError = ''" />
+          placeholder="Enter your email*" minlength="2" required (input)="emailError = ''" autocomplete="off" />
         <div *ngIf="user.invalid && (user.touched || user.dirty) || isFormSubmitted">
           <span *ngIf="user.errors?.['required']">Email is Required</span>
         </div>
         <span *ngIf="emailError">{{emailError}}</span>
       </div>
   
-      <div class="input">
-        <input type="password" name="password" id="password" #passwordUser="ngModel" 
-          [(ngModel)]="userPassword" placeholder="Enter your password*" required (input)="passWordError=''"/>
-        <div *ngIf="passwordUser.invalid && (passwordUser.touched || passwordUser.dirty) || isFormSubmitted">
-          <span *ngIf="passwordUser.errors?.['required']">Password is required</span>
+         <!-- Password Input -->
+         <div class="input">
+          <div class="input-wrapper">
+            <input [type]="showPassword ? 'text' : 'password'" name="password" id="password" #passwordUser="ngModel" [(ngModel)]="userPassword" 
+            placeholder="Enter your password*" required (input)="passWordError=''">
+            <button type="button" class="toggle-btn" (click)="togglePasswordVisibility()">
+              <img [src]="showPassword ? '/assets/invisible.png' : '/assets/show.png'" alt="Toggle visibility" class="toggle-icon">
+            </button>
+          </div>
+          <div *ngIf="passwordUser.invalid && (passwordUser.touched || passwordUser.dirty) || isFormSubmitted">
+            <span *ngIf="passwordUser.errors?.['required']">Password is required</span>
+          </div>
+          <span *ngIf="passWordError " class="error-message">{{passWordError}}</span>
         </div>
-        <span *ngIf="passWordError " class="error-message">{{passWordError}}</span>
-      </div>
+  
       
       <button class="button" type="submit">LOGIN</button>
 

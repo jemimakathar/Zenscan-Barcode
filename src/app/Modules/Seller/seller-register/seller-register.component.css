@@ -1,34 +1,32 @@
 .full {
-  background-color: #dddcdc; /* Dark background color for the full screen */
-  width: 100vw; /* Full width of the viewport */
+  background-color: #dddcdc;
+  width: 100vw;
   overflow: hidden;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  position: fixed; /* Fixes the div to the viewport */
-  height: 100%;    /* Make it take the full height of the viewport */
-  overflow-y: auto; /* Enable vertical scrolling */
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-  
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.register-container
-{
-    max-width: 45%; /* form size*/
-    margin: 60px auto;/* form make center*/
-    padding: 18px;
-    background-color: white; 
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    text-align: center;
-    margin-top: 30px;
-    overflow: hidden;
+.register-container {
+  max-width: 45%;
+  margin: 60px auto;
+  padding: 18px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  margin-top: 30px;
+  overflow: hidden;
 }
 
 .register-container .head {
   font-size: 30px;
   font-weight: bold;
   text-transform: capitalize;
-  color: black; /* White header */
+  color: black;
   text-align: center;
 }
 
@@ -38,20 +36,53 @@
   margin-left: 100px;
 }
 
+.password-input .input-wrapper{
+  position: relative;
+  width: 99%; /* Match input width */ 
+}
+
+
+.toggle-btn {
+  position: absolute;
+  right: 12px;  /* Fixed position from right */
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 2;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-icon {
+  width: 20px;
+  height: 20px;
+  transition: opacity 0.3s ease;
+  margin-right:180px;
+}
+
+.toggle-icon:hover {
+  opacity: 0.8;
+}
+
 .register-container input {
   width: 70%;
-  padding: 10px;
+  padding: 10px 40px 10px 10px;
   border: 1px solid #8a7e7e;
   border-radius: 5px;
-  background-color: #dddddd; /* Input background color */
-  color: #141313; /* Input text color */
+  background-color: #dddddd;
+  color: #141313;
   font-size: 14px;
-  
 }
 
 .register-container input:focus {
   outline: none;
-  border-color: #141313; /* Red focus border */
+  border-color: #141313;
   background-color: #dad6d6;
 }
 
@@ -60,14 +91,13 @@
   padding: 10px;
   border: none;
   border-radius: 8px;
-  background-color:  #0666b4;
-  color: white; /* White button text */
+  background-color: #0666b4;
+  color: white;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-right: 27px;
   margin-top: 30px;
-  
 }
 
 .register-container .button:hover {
@@ -75,7 +105,7 @@
 }
 
 .register-container span {
-  color: #da0000; /* Red error text */
+  color: #da0000;
   font-size: 12px;
 }
 
@@ -83,107 +113,117 @@
   margin-bottom: 80px;
   margin-left: 30px;
 }
-ul {
-    list-style-type: none; /* Removes default list bullets */
-    padding-left: 0; /* Removes default padding */
-    margin-top: 10px;
-    font-size: 14px;
-  }
-  
-  ul li {
-    margin-bottom: 5px;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 13px;
-    color:red;
-    
-  }
-  
-  ul li::before {
-    content: '✅'; /* You can use a checkmark or any symbol you prefer */
-    margin-right: 8px;
-    
-    
-  }
-  
-  ul li.invalid::before {
-    content: '❌'; /* Red cross symbol for invalid items */
-  }
 
-  .create-account
-{
-    color:rgb(66, 67, 68);
-    margin-bottom: 8%;
-    margin-left: 32%;
+ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+ul li {
+  margin-bottom: 5px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 13px;
+  color: red;
+}
+
+ul li::before {
+  content: '✅';
+  margin-right: 8px;
+}
+
+ul li.invalid::before {
+  content: '❌';
+}
+
+.create-account {
+  color: rgb(66, 67, 68);
+  margin-bottom: 8%;
+  margin-left: 32%;
 }
 
 .login-link {
-  color:#0666b4;
+  color: #0666b4;
   font-weight: bold;
   text-decoration: none;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .register-container {
+    max-width: 70%;
+    margin-top: 20px;
+    padding: 15px;
+  }
 
+  .register-container .head {
+    font-size: 26px;
+  }
 
-#dob{
-  color: #9e9797;
+  .register-container input {
+    width: 80%;
+  }
+
+  .toggle-btn {
+    right: 15%;
+  }
+
+  .register-container .button {
+    width: 60%;
+    font-size: 14px;
+    margin-left: 60px;
+  }
+
+  ul li {
+    font-size: 12px;
+  }
 }
 
-  @media (max-width: 768px) {
-    .register-container {
-      max-width: 70%; /* Increase form width for smaller screens */
-      margin-top: 20px;
-      padding: 15px;
-    }
-  
-    .register-container .head {
-      font-size: 26px; /* Smaller header font */
-    }
-  
-    .register-container input {
-      width: 80%; /* Increase input width */
-    }
-  
-    .register-container .button {
-      width: 60%; /* Button takes up more width */
-      font-size: 14px; /* Smaller font size */
-      margin-left: 60px;
-    }
-  
-    ul li {
-      font-size: 12px; /* Smaller font size */
-    }
-  }
-  
-  /* For mobile screens with width less than 480px */
-  @media (max-width: 480px) {
-    .register-container {
-      max-width: 90%; /* Almost full width for mobile */
-      margin-top: 10px;
-      padding: 12px;
-    }
-  
-    .register-container .head {
-      font-size: 22px; /* Even smaller font size for header */
-    }
-  
-    .register-container input {
-      width:70%; /* Inputs take up full width */
-      margin-left:70px; /* Remove left margin */
-    }
-  
-    .register-container .button {
-      width: 100%; /* Button takes full width on mobile */
-      font-size: 14px; /* Button text size */
-
-    }
-  
-    ul li {
-      font-size: 11px; /* Further reduced font size for mobile */
-    }
-  
-    .full {
-      padding: 5px; /* Small padding for mobile */
-    }
+@media (max-width: 480px) {
+  .register-container {
+    max-width: 90%;
+    margin-top: 10px;
+    padding: 12px;
   }
 
- 
+  .register-container .head {
+    font-size: 22px;
+  }
+
+  .register-container input {
+    width: 70%;
+    margin-left: 70px;
+  }
+
+  .toggle-btn {
+    right: 10%;
+  }
+
+  .register-container .button {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  ul li {
+    font-size: 11px;
+  }
+
+  .full {
+    padding: 5px;
+  }
+}
+
+/* Hides default eye icon in Chrome (especially mobile) */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-clear-button,
+input[type="password"]::-webkit-textfield-decoration-container {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

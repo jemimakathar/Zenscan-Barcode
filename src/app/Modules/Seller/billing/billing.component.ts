@@ -21,6 +21,8 @@ import { v4 as uuidv4 } from 'uuid';
 export class BillingComponent {
   @ViewChild('scannerContainer', { static: true }) scannerContainer!: ElementRef;              //Searches for an HTML element with the #scannerContainer reference in your template.
 
+  @ViewChild('billingForm') billingForm: any;
+
   constructor(
   
     readonly router: Router,
@@ -51,26 +53,18 @@ export class BillingComponent {
     }
   }
 
-  isValidPhoneNumber(): boolean {
-    const phoneNumber = this.customerNo;
-    return /^[6-9][0-9]{9}$/.test(phoneNumber);
-  }
+ 
 
-  checkCustomer(): void {
-    if (!this.isValidPhoneNumber()) {
-      console.log("Invalid phone number");
-      return;
-    }
-    
+  checkCustomer(): void {   
     if (this.customerNo) {
-      this.service.getCustomerByPhone(this.customerNo).subscribe({
+      this.service.getCustomerByPhone(this.customerNo.toString()).subscribe({
         next: (response: any) => {
           console.log("check customer",response);
           // check customer if already purchased
           if (response.rows.length > 0) {
-            const customerData = response.rows[0].doc.data;
-            this.customerName = customerData.customerName || ''; // Auto-fill the name if customer exists
-           console.log("customer Name",this.customerName);
+            const customerData = response.rows[0].fields.customerName || '';
+            this.customerName = customerData; // Auto-fill the name if customer exists
+           console.log("customer Name",customerData);
            
           } else {
             this.customerName = ''; // Clear the name if customer not found
@@ -96,7 +90,7 @@ export class BillingComponent {
         {
           inputStream: {
             name: 'Live',
-            type: 'LiveStream',
+            type: 'LiveStream', //Tells Quagga to use the camera (not image files)
             target: this.scannerContainer.nativeElement,
             constraints: {
               width: 467,
@@ -154,6 +148,11 @@ export class BillingComponent {
           .find((p: any) => p.data.product_barcode_id === scannedBarcode);
 
         if (product) {
+
+          if (product.data.isDeleted || product.data.userId !== this.currentUserId) {
+            alert("Product not found in your shop");
+            return;
+          }
           const existingProduct = this.scannedProducts.find(p => p.data.product_barcode_id === scannedBarcode);
           if (existingProduct) {
             existingProduct.data.quantity += 1;
@@ -189,20 +188,6 @@ export class BillingComponent {
 
   // generate bill
   generateBill(): void {
-
-    if (!this.isValidPhoneNumber()) {
-      alert("Please enter a valid 10-digit phone number.");
-      return;
-    }
-
-    if (!this.customerName.trim()) {
-      alert("Please enter a customer name before generating the bill.");
-      return;
-    }
-    if (this.scannedProducts.length === 0) {
-      alert("No products added. Scan a product first.");
-      return;
-    }
 
     const billId = `billing_2_${uuidv4()}`;
     // for bill
@@ -252,18 +237,39 @@ export class BillingComponent {
       }
     });
   }
-// update product quantity
+
+// validate quantity while typing in input field
+ validateQuantity(product: any): void {
+  this.service.getProductById(product._id).subscribe({
+    next: (fetchedProduct: any) => {
+      if (fetchedProduct) {
+        const availableQty = fetchedProduct.data.quantity;
+
+        // Check if entered quantity is more than available
+        if (product.data.quantity > availableQty) {
+          product.quantityErrorMessage = `Only ${availableQty} units available for ${product.data.productName}.`;
+          product.data.quantity = availableQty; // Set it to max
+        } else {
+          product.quantityErrorMessage = ''; // Clear error message
+        }
+
+        this.updateTotalCost();
+      }
+    },
+    error: (error) => {
+      console.error("Error fetching product for quantity check:", error);
+    }
+  });
+}
+
+  
+
+// update product quantity after bill generate
   updateProductQuantity(product: any): void {
     this.service.getProductById(product._id).subscribe({
       next: (fetchedProduct: any) => {
-        if (fetchedProduct && fetchedProduct.data) {
+        if (fetchedProduct) {
           const updatedQuantity = fetchedProduct.data.quantity - product.data.quantity;
-
-          if (updatedQuantity < 0) {
-            console.log(`Not enough stock for ${product.data.product_name}.`);
-            alert(`Not enough stock for ${product.data.product_name}.`);
-            return;
-          }
 
           const updatedProduct = {
             ...fetchedProduct,
@@ -294,6 +300,11 @@ export class BillingComponent {
     this.totalCost = 0;
     this.scannedCode = null;
     this.selectedProduct = null;
+
+
+    if (this.billingForm) {
+      this.billingForm.resetForm();
+    }
+
   }
-  
 }

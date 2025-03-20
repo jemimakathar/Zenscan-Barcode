@@ -8,7 +8,6 @@ import { SellerNavComponent } from './Modules/Seller/seller-nav/seller-nav.compo
 import { BillingComponent } from './Modules/Seller/billing/billing.component';
 import { HomePageComponent } from './Modules/landingPage/home-page/home-page.component';
 import { InvoicesComponent } from './Modules/Seller/invoices/invoices.component';
-import { SellerHomePageComponent } from './Modules/Seller/seller-home-page/seller-home-page.component';
 import { DemoComponent } from './Modules/Demo/demo/demo.component';
 import { AdminPricingComponent } from './Modules/Admin/admin-pricing/admin-pricing.component';
 import { UserListComponent } from './Modules/Admin/user-list/user-list.component';
@@ -16,9 +15,6 @@ import { AdminNavComponent } from './Modules/Admin/admin-nav/admin-nav.component
 import { PaymentListComponent } from './Modules/Admin/payment-list/payment-list.component';
 import { AdminHomePageComponent } from './Modules/Admin/admin-home-page/admin-home-page.component';
 import { DashBoardComponent } from './Modules/Seller/dash-board/dash-board.component';
-import { ProfileComponent } from './Modules/Seller/profile/profile.component';
-
-
 
 
 
@@ -34,7 +30,6 @@ export const routes: Routes = [
     {path:'billing',component:BillingComponent},
     {path:'invoice',component:InvoicesComponent},
     {path:'pricing',component:PricingComponent},
-    {path:'seller-homepage',component:SellerHomePageComponent}, 
     {path:'demo',component:DemoComponent},
     {path:'admin-nav',component:AdminNavComponent},
     {path:'admin-homePage',component:AdminHomePageComponent},
@@ -42,5 +37,4 @@ export const routes: Routes = [
     {path:'admin-userList',component:UserListComponent},
     {path:'payment',component:PaymentListComponent},
     {path:'dash-board',component:DashBoardComponent},
-    {path:'profile',component:ProfileComponent}
 ];

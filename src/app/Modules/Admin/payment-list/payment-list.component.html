@@ -1,24 +1,25 @@
 <app-admin-nav></app-admin-nav>
 <div class="container"> 
+  
     <!-- Card for Users List -->
     <div class="main-card">
       <div class="card-body">
         <table *ngIf="filteredUsers.length > 0" class="table">
           <thead>
             <tr>
+                <th>Subscribe date</th>
                 <th>User Name</th>
                 <th>Email</th>
                 <th>plan Name</th>
-                <th>Subscribe date</th>
                 <th>Payed Amount</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let user of filteredUsers">
+              <td>{{ user.data.subscriptionDate|date:'dd-MM-YYYY'}}</td>
               <td>{{ user.data.username }}</td>
               <td>{{ user.data.email }}</td>
               <td>{{user.data.planName}}</td>
-              <td>{{ user.data.subscriptionDate|date:'dd-MM-YYYY'}}</td>
               <td>{{user.data.price|currency:'INR'}}</td>
               
             </tr>    

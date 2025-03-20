@@ -76,6 +76,7 @@ export class SellerProductsComponent implements AfterContentChecked {
       this.fetchUserDetails();
       this.fetchCategories();
 
+      
     }
   }
   ngAfterContentChecked()    //to change the backend value
@@ -248,19 +249,19 @@ export class SellerProductsComponent implements AfterContentChecked {
     });
   }
 
-  validatePrice() {
-    if (this.productPrice <= 0)  {
-      this.productPrice = 0;
-    }
-  }
+  // validatePrice() {
+  //   if (this.productPrice <= 0)  {
+  //     this.productPrice = 0;
+  //   }
+  // }
 
-  validateQuantity()
-  {
-    if(this.quantity<=0)
-    {
-      this.quantity=0;
-    }
-  }
+  // validateQuantity()
+  // {
+  //   if(this.quantity<=0)
+  //   {
+  //     this.quantity=0;
+  //   }
+  // }
 
 
   // Filter products by category
@@ -322,7 +323,8 @@ export class SellerProductsComponent implements AfterContentChecked {
     const updatedData = {
       ...this.editingProduct,
       _rev: this.editingProduct._rev,
-      data: {
+      data: 
+      {
         ...this.editingProduct.data,
         productName: this.productName,
         productPrice: this.productPrice,
@@ -367,7 +369,7 @@ export class SellerProductsComponent implements AfterContentChecked {
       ...product,
       _rev: productRev,
       data: {
-        ...product.data,
+        ...product.data,  
         isDeleted: true, // Mark the product as deleted
       }
     };

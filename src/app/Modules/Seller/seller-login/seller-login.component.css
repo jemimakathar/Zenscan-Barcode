@@ -31,6 +31,17 @@
 .input {
     margin-bottom: 15px;
     text-align: left;
+    position: relative; /* Added for positioning context */
+}
+
+/* Specific style for password input container */
+.password-input {
+    position: relative;
+}
+
+.password-input input {
+    padding-right: 40px; /* Make space for the icon */
+    width: 100%; /* Full width of container */
 }
 
 .input input {
@@ -47,6 +58,31 @@
     outline: none;
     border-color: #141313;
     background-color: #dad6d6;
+}
+
+/* Toggle Icon Styles */
+.toggle-btn {
+    position: absolute;
+    right: 25px; /* Adjust based on your layout */
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 2;
+    
+}
+
+.toggle-icon {
+    width: 24px;
+    height: 24px;
+    transition: opacity 0.3s ease;
+    margin-left: 60%;
+}
+
+.toggle-icon:hover {
+    opacity: 0.8;
 }
 
 /* Error Messages */
@@ -90,4 +126,44 @@ span {
 
 .register-link:hover {
     text-decoration: underline;
+}
+
+/* Media Queries for Responsive Adjustments */
+@media (max-width: 768px) {
+    .seller-login-container {
+        width: 80%;
+        padding: 40px;
+    }
+    
+    .toggle-btn {
+        right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .seller-login-container {
+        width: 90%;
+        padding: 30px;
+    }
+    
+    .toggle-btn {
+        right: 15px;
+    }
+    
+    .create-account {
+        margin-left: 25%;
+    }
+}
+  /* Hides default eye icon in Chrome (especially mobile) */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-clear-button,
+input[type="password"]::-webkit-textfield-decoration-container {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }

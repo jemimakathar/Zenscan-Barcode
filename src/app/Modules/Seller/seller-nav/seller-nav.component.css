@@ -13,7 +13,7 @@
   align-items: center;
   overflow-y: auto;
   transition: 0.3s ease-in-out;
-  z-index: 1000;
+  
 }
 
 /* Navigation Links */
@@ -81,4 +81,77 @@
       height: 20px; /* Smaller image size for smaller screens */
       margin-right: 8px; /* Adjust spacing for smaller screens */
   }
+}
+.profile-circle {
+  width: 55px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #032f58;
+  color: white;
+  font-size: 33px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  margin-left: 30%;
+  padding-top: 5px;
+}
+
+.username {
+  display: flex; /* Use Flexbox to align items horizontally */
+  align-items: center; /* Vertically center the items */
+  gap: 10px; /* Add space between the h2 and img */
+  margin-left: 32%;
+  font-weight: 800;
+  color: #000000;
+  font-size: 20px;
+}
+
+
+img {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.modal-buttons {
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-buttons button:first-child {
+  background-color: #032f58;
+  color: white;
+}
+
+.modal-buttons button:last-child {
+  background-color: #ccc;
+  color: black;
 }

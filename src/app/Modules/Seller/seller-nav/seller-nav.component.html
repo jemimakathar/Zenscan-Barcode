@@ -1,8 +1,38 @@
+<!-- seller-nav.component.html -->
 <ul class="navbar-links" id="navbarLinks">
-    <app-profile></app-profile>
-    <li><a class="nav-link" routerLink="/dash-board"><img src="/assets/home.png" alt="Home">Home</a></li>
+    <!-- Profile Section -->
+    <li class="profile-section" *ngIf="username">
+      <div class="profile-info">
+        <div class="profile-circle">
+          {{ getInitial() }}
+        </div>
+        <span class="username">{{ username }}</span>
+      </div>
+    </li>
+  
+    <!-- Navigation Links -->
+    <li><a class="nav-link" routerLink="/dash-board" routerLinkActive="active"><img src="/assets/home.png" alt="Home">Home</a></li>
     <li><a class="nav-link" routerLink="/seller-category" routerLinkActive="active"><img src="/assets/menu.png" alt="Category">Category</a></li>
-    <li><a class="nav-link" routerLinkActive="active" (click)="nullCategory()"  routerLink="/seller-product"><img src="/assets/order.png"alt="Product">Product</a></li>
+    <li><a class="nav-link" routerLinkActive="active" (click)="nullCategory()" routerLink="/seller-product"><img src="/assets/order.png" alt="Product">Product</a></li>
     <li><a class="nav-link" routerLink="/billing" routerLinkActive="active"><img src="/assets/billing.png" alt="Billing">Billing</a></li>
     <li><a class="nav-link" routerLink="/invoice" routerLinkActive="active"><img src="/assets/invoices.png" alt="Invoices">Invoice</a></li>
-</ul>
+  
+    <!-- Logout Button -->
+    <li class="logout-item">
+      <a class="nav-link" (click)="openLogoutConfirmation()">
+        <img src="assets/logout.png" alt="Logout">
+        <span>Logout</span>
+      </a>
+    </li>
+  </ul>
+  
+  <!-- Logout Confirmation Modal -->
+  <div *ngIf="showLogoutConfirmation" class="modal-overlay">
+    <div class="modal-content">
+      <p>Are you sure you want to logout?</p>
+      <div class="modal-buttons">
+        <button (click)="confirmLogout()">Yes</button>
+        <button (click)="cancelLogout()">No</button>
+      </div>
+    </div>
+  </div>

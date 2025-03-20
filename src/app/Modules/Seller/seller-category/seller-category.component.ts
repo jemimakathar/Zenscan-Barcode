@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule,TitleCasePipe} from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SellerNavComponent } from '../seller-nav/seller-nav.component';
 import { Router } from '@angular/router';
@@ -21,7 +21,7 @@ enum BarcodeType {
   imports: [FormsModule, CommonModule, HttpClientModule, SellerNavComponent],
   templateUrl: './seller-category.component.html',
   styleUrls: ['./seller-category.component.css'],
-  providers: [HttpClient, AuthenticationService, CouchdbService],
+  providers: [HttpClient, AuthenticationService, CouchdbService,TitleCasePipe],
 })
 export class SellerCategoryComponent implements OnInit {
   // ngModel
@@ -165,9 +165,9 @@ export class SellerCategoryComponent implements OnInit {
 
   navigateToProduct(categoryName: string) {
     if (typeof window != 'undefined')
-      localStorage.setItem("SelectedCategory", categoryName)
+      localStorage.setItem("SelectedCategory", categoryName.toLocaleLowerCase())
     console.log("Category", categoryName);
-    this.router.navigate(['/seller-product']);
+      this.router.navigate(['/seller-product'], { state: { category: categoryName } });
   }
 
   // Reset Form

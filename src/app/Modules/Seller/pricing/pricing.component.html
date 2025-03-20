@@ -5,7 +5,7 @@
 
   <!-- Toggle Switch -->
   <div class="toggle-container">
-      <div class="toggle-switch" [class.active]="isYearly" (click)="togglePricing()">
+      <div class="toggle-switch" [class.active]="isYearly" (click)="togglePricing()" (keydown.enter)="togglePricing()">
       <span class="toggle-option" [class.active]="!isYearly">Monthly</span>
       <span class="toggle-option" [class.active]="isYearly">Yearly</span>
       <div class="toggle-slider" [style.left]="isYearly ? '43%' : '0'"></div>
@@ -19,7 +19,7 @@
         <h4>{{ plan.data.planName }}</h4>
         <p><strong>Price:</strong> {{plan.data.price | currency :'INR'}}</p>
         <p>{{ plan.data.description }}</p>
-        <p><strong>Duration:</strong> {{ plan.data.duration }} Months</p>
+        <p><strong>Duration:</strong> {{ plan.data.duration }} {{isYearly ? 'Years' : 'Months'}}</p>
         <a class="get-started-link"  (click)="selectPlan(plan)" >Get Started</a>
       </div>
     </div>

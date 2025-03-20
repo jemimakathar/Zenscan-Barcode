@@ -69,8 +69,12 @@ export class PricingComponent implements OnInit {
 
   // Toggle between yearly and monthly plans
   togglePricing(): void {
-    this.isYearly = !this.isYearly;
-    this.filterPlans();
+    // Prevent toggling if payment form is visible
+  if (this.showPaymentForm) {
+    return;
+  }
+  this.isYearly = !this.isYearly;
+  this.filterPlans();
   }
 
   // Filter plans based on the selected duration (yearly/monthly)
@@ -145,6 +149,7 @@ export class PricingComponent implements OnInit {
       next: () => {
         alert('Subscription successful.');
         localStorage.removeItem('selectedPlanId'); // Clear the selected plan ID from local storage
+        this.router.navigate(['/dash-board'])
 
       },
       error: (err) => {

@@ -16,54 +16,39 @@ import { AuthenticationService } from '../../../Services/authentication.service'
   providers: [AuthenticationService, HttpClient]
 })
 export class SellerRegisterComponent {
-  user =
-    {
-      name: '',
-      email: '',
-      companyName: '',
-      password: '',
-      confirmPassword: '',
-      userType: 'user'
-    };
+  user = {
+    name: '',
+    email: '',
+    companyName: '',
+    password: '',
+    confirmPassword: '',
+    userType: 'user'
+  };
 
-
-
-  isFormSubmitted = false
-  users: any[] = []
+  isFormSubmitted = false;
+  users: any[] = [];
   emailExists = false;
 
-  // password
+  // password rules
   isPasswordValidLength = false;
-  hasSpecialChar = false;               
+  hasSpecialChar = false;
   hasCapitalLetter = false;
   hasNumber = false;
 
-  constructor(readonly authService:AuthenticationService, readonly router: Router) {
-    
-  }
+  // Password visibility
+  showPassword = false;
+  showConfirmPassword = false;
+
+  constructor(readonly authService: AuthenticationService, readonly router: Router) {}
 
   onEmailOrUsernameChange() {
-    if(this.user.email.length !=0)
-    this.checkSellerExists();
+    if (this.user.email.length != 0) this.checkSellerExists();
   }
 
-
   checkSellerExists() {
-    console.log(this.user.email);
-    
     this.authService.checkSellerExists(this.user.email).subscribe({
       next: (response) => {
-        this.emailExists = false;
-        console.log(response);
-        
-        response.rows.forEach((row: any) => {
-          if (row.key === this.user.email) {
-            this.emailExists = true;
-          }
-
-        });
-        console.log(this.emailExists);
-        
+        this.emailExists = response.rows.some((row: any) => row.key === this.user.email);
       },
       error: (error) => {
         console.error("Error checking email/username:", error.message);
@@ -71,16 +56,12 @@ export class SellerRegisterComponent {
     });
   }
 
-
-    // Register User with Free Trial
   registerUser(dataRegister: NgForm) {
-    this.isFormSubmitted = true
-   
+    this.isFormSubmitted = true;
 
-    if (!dataRegister.valid || !this.confirmPassword() || !this.isPasswordChecked()  || this.emailExists) {
+    if (!dataRegister.valid || !this.confirmPassword() || !this.isPasswordChecked() || this.emailExists) {
       return;
     }
-        
 
     const data: any = {
       _id: `user_2_${uuidv4()}`,
@@ -90,58 +71,58 @@ export class SellerRegisterComponent {
         company: this.user.companyName,
         password: this.user.password,
         confirmPassword: this.user.confirmPassword,
-        status: "Register",
-        userStatus: "unblock",  
+        userStatus: "unblock",
         role: 'user',
         type: "user",
       }
-
     };
+
     this.authService.registerUser(data).subscribe({
-      next: (response) => {
+      next: () => {
         alert(`🎉 Registration Successful!`);
         this.resetForm();
         this.router.navigate(['/seller-login']);
       },
       error: (error) => {
-        alert("Error")
+        alert("Error");
         console.log("error message", error.message);
       }
     });
-
   }
 
   resetForm() {
     this.user = {
-
       name: '',
       email: '',
       companyName: '',
       password: '',
       confirmPassword: '',
       userType: "user"
-
     };
   }
 
-
-  // for password
+  // password validation
   validatePassword() {
     const password = this.user.password;
-    this.hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);//test-true or false
+    this.hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     this.hasCapitalLetter = /[A-Z]/.test(password);
     this.hasNumber = /\d/.test(password);
     this.isPasswordValidLength = password.length >= 8;
   }
 
   confirmPassword(): boolean {
-    return this.user.password === this.user.confirmPassword
+    return this.user.password === this.user.confirmPassword;
   }
-  // validate the password
+
   isPasswordChecked() {
-    return this.hasCapitalLetter && this.hasSpecialChar && this.hasNumber && this.isPasswordValidLength
+    return this.hasCapitalLetter && this.hasSpecialChar && this.hasNumber && this.isPasswordValidLength;
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }
-
-
-

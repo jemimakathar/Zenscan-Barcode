@@ -6,6 +6,7 @@ import { SellerNavComponent } from "../seller-nav/seller-nav.component";
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../Services/authentication.service';
 import { CouchdbService } from '../../../Services/couchdb.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-invoices',
@@ -40,7 +41,6 @@ export class InvoicesComponent implements OnInit {
         return;
       }
       this.fetchBillHeaders();
-      this.fetchInvoices();
       this.fetchAllProducts();
     }
   }
@@ -51,37 +51,39 @@ export class InvoicesComponent implements OnInit {
 
   // Fetch all bill headers
   fetchBillHeaders(): void {
-    this.service.getBillingDetailsFromBillHeader().subscribe({
+    this.currentUserId = localStorage.getItem('currentUserId') ?? this.service.currentUserId;
+  
+    this.service.getBillingDetailsByUserId(this.currentUserId).subscribe({
       next: (response: any) => {
-        this.billHeaders = response.rows.map((row: any) => row.doc)
-          .filter((bill: any) => bill.data.userId === this.currentUserId).sort((a:any,b:any)=>{
-            const dateA =new Date(a.data.date).getTime();
-            const dateB = new Date(b.data.date).getTime();
-            return dateB - dateA;
-
-          })
+        console.log("the",response);
+        this.billHeaders = response.rows.map((row: any) => row.doc).sort((a: any, b: any) => { 
+          const dateA = new Date(a.data.date).getTime();
+          const dateB = new Date(b.data.date).getTime();
+          return dateB - dateA;
+        });
+        this.fetchInvoices();
         console.log('Bill Headers:', this.billHeaders);
       },
       error: (error) => {
-        console.error('Error fetching bill headers:', error);
+        console.error('Error fetching filtered bill headers:', error);
       }
     });
   }
-
+  
   // Fetch all invoice details
   fetchInvoices(): void {
-    this.service.getBillingDetailsFromInvoice().subscribe({
-      next: (response: any) => {
-        this.invoices = response.rows.map((row: any) => row.doc).filter((bill: any) => bill);
-        console.log('Invoices:', this.invoices);  
-      },
-      error: (error) => {
-        console.error('Error fetching invoices:', error);
-      }
-    });
+    this.billHeaders.forEach((billId:any)=>{
+      this.service. getInvoicesByBillId(billId._id).subscribe({
+        next: (response: any) => {
+          console.log("res",response);
+          response.rows.forEach((productId : any) => this.invoices.push(productId.value)) 
+          console.log("productId",this.invoices);   
+          this.fetchAllProducts();
+        },
+        error: (error) => console.log('Error fetching invoices:', error)
+      });
+    })
   }
-
-  
 
   // Fetch all products
   fetchAllProducts(): void {

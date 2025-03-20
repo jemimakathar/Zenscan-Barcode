@@ -1,16 +1,19 @@
 <app-seller-nav></app-seller-nav>
-<h2>Welcome, {{ currentUser }}</h2>
+<h1>📦Seller Product Management</h1>
 
 <div class="product-container">
 
   <div>
     <div class="add-product-nav">
-      <button (click)="toggleProductForm()">Add Product</button>
+      <img src="/assets/plus.png" class="plus-icon" alt="plus-icon" (click)="toggleProductForm()" (keydown.enter)="toggleProductForm()">
       <img src="/assets/circle.png" class="outStock" alt="outStock" (click)="toggleLowStockProducts()" (keydown.enter)="toggleLowStockProducts()">
     </div>
 
     <form *ngIf="showProductForm" class="product-form" #productForm="ngForm" (ngSubmit)="addNewProductForSeller()"
       novalidate>
+
+      <a  class="close-btn" (click)="cancelProductForm()">X</a>
+      <h3>Add Products</h3>
 
       <!-- Product Name -->
       <input type="text" placeholder="Product Name" [(ngModel)]="productName" name="productName" required
@@ -18,20 +21,27 @@
       <div *ngIf="addedProductName.invalid && addedProductName.touched" class="error">Name is required</div>
 
       <!-- Price -->
-      <input type="number" placeholder="Price" [(ngModel)]="productPrice" name="productPrice" required
-        #addedProductPrice="ngModel" (click)=validatePrice() />
-      <div *ngIf="addedProductPrice.invalid && addedProductPrice.touched" class="error">Price is required</div>
+      <input type="number" placeholder="Price" [(ngModel)]="productPrice" name="productPrice" 
+        required min="1" #addedProductPrice="ngModel" />
+      <div *ngIf="addedProductPrice.invalid && (addedProductPrice.touched || addedProductPrice.dirty)" class="error">
+        <span *ngIf="addedProductPrice.errors?.['required']">Price is required</span>
+        <span *ngIf="addedProductPrice.errors?.['min']">Price must be at least ₹1</span>
+      </div>
 
       <!-- Description -->
       <input type="text" placeholder="Description" [(ngModel)]="productDescription" name="productDescription" required
-        #addedProductDescription="ngModel" />
-      <div *ngIf="addedProductDescription.invalid && addedProductDescription.touched" class="error">Description is
-        required</div>
+      #addedProductDescription="ngModel" />
+      <div *ngIf="addedProductDescription.invalid && (addedProductDescription.touched || addedProductDescription.dirty)" class="error">
+      Description is required
+      </div>
 
       <!-- Quantity -->
-      <input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="quantity" required
-        #addedProductQuantity="ngModel" (click)=validateQuantity() />
-      <div *ngIf="addedProductQuantity.invalid && addedProductQuantity.touched" class="error">Quantity is required</div>
+      <input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="quantity" 
+        required min="1" #addedProductQuantity="ngModel" />
+      <div *ngIf="addedProductQuantity.invalid && (addedProductQuantity.touched || addedProductQuantity.dirty)" class="error">
+        <span *ngIf="addedProductQuantity.errors?.['required']">Quantity is required</span>
+        <span *ngIf="addedProductQuantity.errors?.['min']">Quantity must be at least 1</span>
+      </div>
 
       <!-- Category Selection -->
       <select [(ngModel)]="productCategory" name="productCategory" required #addedProductCategory="ngModel"
@@ -53,7 +63,7 @@
 
       <!-- Submit & Cancel Buttons -->
       <button type="submit" [disabled]="productForm.invalid">Submit Product</button>
-      <button type="button" (click)="cancelProductForm()">Cancel</button>
+     
 
     </form>
   </div>
@@ -70,7 +80,7 @@
             #price="ngModel" min="1" />
           <div *ngIf="price.invalid && (price.touched || price.dirty)" class="error">
             <span *ngIf="price.errors?.['required']">Price is required</span>
-            <span *ngIf="price.errors?.['min']">Price must be greater than zero</span>
+            <span *ngIf="price.errors?.['min']">Price must be at least ₹1</span>
           </div>
           <input type="text" placeholder="Description" [(ngModel)]="productDescription" name="productDescription"
             required #description="ngModel" minlength="3" />
@@ -83,7 +93,7 @@
             #quantityField="ngModel" min="1" />
           <div *ngIf="quantityField.invalid && (quantityField.touched || quantityField.dirty)" class="error">
             <span *ngIf="quantityField.errors?.['required']">Quantity is required</span>
-            <span *ngIf="quantityField.errors?.['min']">Must be at least 1</span>
+            <span *ngIf="quantityField.errors?.['min']">Quantity must be at least 1</span>
           </div>
           <input type="text" placeholder="Category" [(ngModel)]="productCategory" name="category" required
             #category="ngModel" />

@@ -1,6 +1,6 @@
 <app-seller-nav></app-seller-nav>
 
-<div class="main-container">
+<form #billingForm="ngForm" class="main-container">
   <!-- Left Side: Scanner -->
   <div class="scanner-container">
     <h2>Barcode Scanner</h2>
@@ -9,16 +9,36 @@
 
   <!-- Right Side: Bill Details -->
   <div class="billing-container">
-    <label for="customerNo">Phone Number:</label>
-    <input type="text" id="customerNumber" [(ngModel)]="customerNo" (ngModelChange)="checkCustomer()" placeholder="Enter customer Phone Number" required pattern="[0-9]{10}">
-    <div *ngIf="customerNo && !isValidPhoneNumber()" class="error-message">
+    <label for="customerNumber">Phone Number:</label>
+    <input type="text"
+           id="customerNumber"
+           name="customerNumber"
+           [(ngModel)]="customerNo"
+           (ngModelChange)="checkCustomer()"
+           pattern="^[6-9][0-9]{9}$"
+           required
+           #customerNumberRef="ngModel"
+           placeholder="Enter customer phone number" />
+
+    <div *ngIf="customerNumberRef.invalid && (customerNumberRef.touched || customerNumberRef.dirty)" class="error-message">
       Please enter a valid 10-digit phone number.
     </div>
 
     <label for="customerName">Customer Name:</label>
-    <input type="text" id="customerName" [(ngModel)]="customerName" placeholder="Enter customer name">
+    <input type="text"
+           id="customerName"
+           name="customerName"
+           [(ngModel)]="customerName"
+           required
+           #customerNameRef="ngModel"
+           placeholder="Enter customer name" />
+
+    <div *ngIf="customerNameRef.invalid && customerNameRef.touched" class="error-message">
+      Customer name is required.
+    </div>
+
     <h3 class="heading">Scanned Products</h3>
-    <table>
+    <table *ngIf="scannedProducts.length > 0">
       <thead>
         <tr>
           <th>Product Name</th>
@@ -29,14 +49,32 @@
       <tbody>
         <tr *ngFor="let product of scannedProducts">
           <td>{{ product.data.productName }}</td>
-          <td>{{ product.data.productPrice | currency :'INR' }}</td>
-          <td><input type="number" [(ngModel)]="product.data.quantity" (change)="updateTotalCost()" min="1"></td>
+          <td>{{ product.data.productPrice | currency: 'INR' }}</td>
+          <td>
+            <input type="number"
+                   [(ngModel)]="product.data.quantity"
+                   [name]="'quantity_' + product._id"
+                   (ngModelChange)="validateQuantity(product)"
+                   min="1"
+                   required />
+
+            <!-- Show validation error if exists -->
+            <div *ngIf="product.quantityErrorMessage" class="error-message">
+              {{ product.quantityErrorMessage }}
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
 
-    <h3>Total: {{ totalCost | currency }}</h3>
+    <div *ngIf="scannedProducts.length === 0" class="error-message">No products scanned.</div>
 
-    <button (click)="generateBill()">Generate Bill</button>
+    <h3>Total: {{ totalCost | currency:'INR' }}</h3>
+
+    <button type="button"
+            (click)="generateBill()"
+            [disabled]="!billingForm.form.valid || scannedProducts.length === 0">
+      Generate Bill
+    </button>
   </div>
-</div>
+</form>

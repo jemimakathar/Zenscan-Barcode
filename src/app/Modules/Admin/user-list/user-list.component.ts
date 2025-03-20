@@ -17,15 +17,15 @@ import { AdminNavComponent } from "../admin-nav/admin-nav.component";
   providers:[HttpClient,AuthenticationService,CouchdbService]
 })
 export class UserListComponent {
-  users: any[] = [];
+users: any[] = [];
   filteredUsers: any[] = [];
   searchTerm: string = '';
-  subscriptionDetails:any[]=[]
-  planDetails:any;
+  subscriptionDetails: any[] = [];
+  planDetails: any;
+  showActiveUsers: boolean = true;     // default: show active users
+  showInactiveUsers: boolean = true;   // default: show inactive users
 
-
-  constructor(readonly authService:AuthenticationService,readonly service:CouchdbService)
-  {}
+  constructor(readonly authService: AuthenticationService, readonly service: CouchdbService) {}
 
   ngOnInit(): void {
     this.fetchUsers();
@@ -33,17 +33,12 @@ export class UserListComponent {
     this.getPlanDetails();
   }
 
-
   fetchUsers() {
     this.authService.fetchUser().subscribe({
       next: (response) => {
-        this.users = response.rows.map((row: any) => row.doc); // Extracting documents
-
-        // Only include users with the role "user"
+        this.users = response.rows.map((row: any) => row.doc);
         this.filteredUsers = this.users.filter(user => user.data.role === 'user');
-        this.mapSubscriptionDetailsToUsers(); 
-
-        console.log("Data from DB", this.filteredUsers);
+        this.mapSubscriptionDetailsToUsers();
       },
       error: (error) => {
         console.log('Error fetching Users:', error);
@@ -51,65 +46,64 @@ export class UserListComponent {
     });
   }
 
- 
-  getSubscriptionDetails()
-  {
+  getSubscriptionDetails() {
     this.service.getSubscription().subscribe({
-      next:(response)=>{
-        this.subscriptionDetails=response.rows.map((row:any)=>row.doc)
-        console.log("subscriptionDetails",this.subscriptionDetails);  
-        this.mapSubscriptionDetailsToUsers(); 
-          
+      next: (response) => {
+        this.subscriptionDetails = response.rows.map((row: any) => row.doc);
+        this.mapSubscriptionDetailsToUsers();
       },
       error: (error) => {
         console.log('Error fetching Subscription:', error);
       }
-    })
+    });
   }
 
-  
-  getPlanDetails()
-  {
+  getPlanDetails() {
     this.service.getAllPlans().subscribe({
-      next:(response)=>{
-        this.planDetails=response.rows.map((row:any)=>row.doc)
-         this.mapSubscriptionDetailsToUsers(); 
+      next: (response) => {
+        this.planDetails = response.rows.map((row: any) => row.doc);
+        this.mapSubscriptionDetailsToUsers();
       }
-    })
+    });
   }
-
 
   mapSubscriptionDetailsToUsers() {
     this.filteredUsers.forEach((user, indexValue) => {
       const subscription = this.subscriptionDetails.find(users => users.data.userId === user._id);
 
-      // ? --> if it is undefined cannot read because some data have not currentSubscription==true
-      if(subscription?.data?.currentSubscription)//if the currentSubscription==true is available this condition is executed
-      {
+      if (subscription?.data?.currentSubscription) {
         this.filteredUsers[indexValue].data.subscriptionStatus = 'Active';
-        let particularPlan = this.planDetails.find((plan : any) => plan._id === subscription.data.planId)
-        console.log(particularPlan.data.planName);
-        this.filteredUsers[indexValue].data.planName = particularPlan.data.planName;
+        const particularPlan = this.planDetails.find((plan: any) => plan._id === subscription.data.planId);
+        this.filteredUsers[indexValue].data.planName = particularPlan?.data?.planName || 'Unknown Plan';
+      } else {
+        this.filteredUsers[indexValue].data.subscriptionStatus = 'Inactive';
+        this.filteredUsers[indexValue].data.planName = 'No Subscription';
       }
-      else{
-      this.filteredUsers[indexValue].data.subscriptionStatus = 'In Active';   
-      this.filteredUsers[indexValue].data.planName = 'No Subscription';  
-      } 
     });
-    console.log("filtered",this.filteredUsers);
-    
+
+    this.filterUser(); // apply filter after mapping
   }
 
-   // for search the user
-   filterUser() {
+  // Updated filterUser method
+  filterUser() {
     const term = this.searchTerm.toLowerCase();
-    this.filteredUsers = this.users.filter(
-      (user) =>  user.data.role === 'user' &&
+
+    this.filteredUsers = this.users.filter((user) => {
+      const matchesSearch =
+        user.data.role === 'user' &&
         (user.data.username.toLowerCase().includes(term) ||
-        user.data.email.toLowerCase().includes(term) ||
-        user.data.company.toLowerCase().includes(term)||
-        user.data.planName.toLowerCase().includes(term)
-    )
-    );
+          user.data.email.toLowerCase().includes(term) ||
+          user.data.company.toLowerCase().includes(term) ||
+          (user.data.planName?.toLowerCase().includes(term)));
+
+      const isActive = user.data.subscriptionStatus === 'Active';
+      const isInactive = user.data.subscriptionStatus === 'Inactive';
+
+      const matchesStatus =
+        (this.showActiveUsers && isActive) ||
+        (this.showInactiveUsers && isInactive);
+
+      return matchesSearch && matchesStatus;
+    });
   }
 }

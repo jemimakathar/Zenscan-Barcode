@@ -1,68 +1,190 @@
 :host {
   display: block;
-  background-color: #f5f7fa;
-  min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e6e9ef 100%);
+  padding-top: 0px;
 }
 
 .dashboard-container {
-  padding: 20px;
-  margin-left: 44%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  padding: 0px;
+  margin-left: 250px;
+  animation: fadeIn 0.6s ease-in;
 }
 
 .dashboard-header {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 2px;
+  color: rgb(211, 17, 17);
+  margin-right: 5%;
 }
 
 .heading {
-  font-size: 24px;
+  font-size: 28px;
   margin-bottom: 10px;
-  color: #333;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.chart-container {
+.sales-title {
+  font-size: 22px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.content-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  background-color: #fff;
-  padding-left: 5%;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 650px;
-  margin-left: 20%;
-  padding-top: 2%;
-  padding-right: 2%;
+  gap: 30px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+/* Top Products Section */
+.top-products {
+  flex: 1;
+  background: white;
+  padding: 21px;
+  border-radius: 15px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  max-width: 310px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.top-products:hover {
+  transform: translateY(-5px);
+}
+
+.title-ribbon {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  padding: 12px;
+  border-radius: 8px;
+  margin: -15px -15px 20px -15px;
+}
+
+.top-products h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 20px;
+}
+
+.subtext {
+  color: #6b7280;
+  margin-bottom: 25px;
+  line-height: 1.6;
+  border-left: 3px solid #6366f1;
+  padding-left: 15px;
+}
+
+.top-products ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.top-products li {
+  padding: 15px;
+  margin-bottom: 12px;
+  background: #f8fafc;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.top-products li:hover {
+  background: #f1f5f9;
+  transform: translateX(10px);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.emoji-badge {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-info {
+  flex-grow: 1;
+}
+
+.product-name {
+  color: #1e293b;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.quantity-badge {
+  background: #e0e7ff;
+  color: #4f46e5;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: inline-block;
+}
+
+/* Chart Container */
+.chart-container {
+  flex: 2;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.chart-container:hover {
+  transform: translateY(-3px);
 }
 
 .chart-header {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 10px;
 }
 
 .chart-header label {
-  margin-right: 10px;
-  font-weight: 500;
-  color: #555;
-  
+  font-weight: 600;
+  color: #374151;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .chart-header select {
-  padding: 6px 12px;
+  padding: 10px 20px;
   font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-  color: #333;
+  border-radius: 8px;
+  border: 2px solid #e0e7ff;
+  background: white;
+  color: #4f46e5;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chart-header select:hover {
+  border-color: #818cf8;
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.1);
 }
 
 .chart {
   width: 100%;
   height: 400px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -20,12 +20,20 @@ export class SellerLoginComponent {
   isFormSubmitted = false;
   emailError: string = '';
   passWordError: string = '';
+  showPassword: boolean = false;
+
 
   constructor(
     readonly service: CouchdbService,
     readonly authService: AuthenticationService,
     readonly router: Router
-  ) {}
+  ) { }
+
+  // Toggle visibility functions
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
 
   userLogin(userData: NgForm) {
     this.isFormSubmitted = true;
@@ -61,13 +69,13 @@ export class SellerLoginComponent {
             if (user.data.role === 'admin') {
               alert("✅ Admin login successful!");
 
-              this.authService.setUserData(user.data.username);
+              this.authService.setUserData(user.data.username,user._id);
               localStorage.setItem('currentUser', user.data.username);
               this.router.navigate(['/admin-homePage']); // Navigate to Admin Dashboard
               return;
             }
             // Store user details in localStorage
-            this.authService.setUserData(user.data.username);
+            this.authService.setUserData(user.data.username,user._id);
             this.authService.currentUserId = user._id;
             localStorage.setItem('currentUser', user.data.username);
             localStorage.setItem('currentUserId', user._id);
@@ -104,7 +112,7 @@ export class SellerLoginComponent {
 
                   this.service.updateSubscription(userSubscription._id, updatedSubscription).subscribe({
                     next: () => {
-                      console.log('Subscription expired and deactivated.');
+
                       alert('Your subscription has expired. Please renew your subscription.');
                       this.router.navigate(['/pricing']); // Navigate to pricing page
                     },
@@ -115,39 +123,14 @@ export class SellerLoginComponent {
                   });
                   return; // Stop further execution
                 }
+                alert("Login successful!");
+                this.reset(userData);
 
-                // Update user status to "login"
-                const updatedUser = {
-                  _id: user._id,  // Ensure _id is included
-                  _rev: user._rev,
-                  data: {
-                    ...user.data, // Spread existing user details
-                    status: "login"
-                  }, // Update status
-                };
-                console.log("Updated User", updatedUser);
-
-                this.authService.updateUserStatus(user._id, updatedUser).subscribe({
-                  next: () => {
-                    const users = response.rows.map((row: any) => row.value);
-                    console.log("updated ", users);
-                    alert("Login successful! Status updated.");
-                    this.reset(userData);
-
-                    // Navigate based on role
-                    console.log("current user", user._id);
-
-                    if (user.data.role === 'admin') {
-                      this.router.navigate(['/admin-homePage']); // Admin Dashboard
-                    } else {
-                      this.router.navigate(['/seller-homepage']); // Seller Dashboard
-                    }
-                  },
-                  error: (err) => {
-                    console.error("Error updating user status:", err);
-                    alert("Login successful, but status update failed.");
-                  },
-                });
+                if (user.data.role === 'admin') {
+                  this.router.navigate(['/admin-homePage']); // Admin Dashboard
+                } else {
+                  this.router.navigate(['/dash-board']); // Seller Dashboard
+                }
               },
               error: (err) => {
                 console.error("Error fetching subscription:", err);

@@ -1,12 +1,13 @@
-// dash-board.component.ts
 import { Component } from '@angular/core';
 import { CouchdbService } from '../../../Services/couchdb.service';
-import * as d3 from 'd3';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../Services/authentication.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SellerNavComponent } from "../seller-nav/seller-nav.component";
+import { firstValueFrom } from 'rxjs';
+import { forkJoin } from 'rxjs';
+import * as d3 from 'd3';
 
 @Component({
   selector: 'app-dash-board',
@@ -22,7 +23,7 @@ export class DashBoardComponent {
   currentUserId: string = '';
   selectedChart: string = '7days';
   currentUser!: string;
-  topProducts: { productName: string, totalQuantity: number }[] = [];
+  topProducts: { productId: string, totalQuantity: number, productName: string }[] = [];
 
   constructor(
     readonly service: CouchdbService,
@@ -31,55 +32,93 @@ export class DashBoardComponent {
   ) {}
 
   ngOnInit(): void {
-      if (typeof window !== 'undefined') {
-        this.currentUser = localStorage.getItem('currentUser') ?? this.authService.currentUser;
-        this.currentUserId=localStorage.getItem('currentUserId') ?? this.authService.currentUserId;
-        
-        if (!this.currentUser || !this.currentUserId) {
-          this.router.navigate(['/seller-login']); 
-          return;
-        }
+    if (typeof window !== 'undefined') {
+      this.currentUser = localStorage.getItem('currentUser') ?? this.authService.currentUser;
+      this.currentUserId = localStorage.getItem('currentUserId') ?? this.authService.currentUserId;
+
+      if (!this.currentUser || !this.currentUserId) {
+        this.router.navigate(['/seller-login']);
+        return;
+      }
+
       this.fetchBillHeaders();
       this.fetchInvoices();
     }
   }
 
   onChartTypeChange(): void {
-    setTimeout(() => {
-      this.generateCharts();
-    }, 0);
+    setTimeout(() => this.generateCharts(), 0);
   }
 
   fetchBillHeaders(): void {
-    this.service.getBillingDetailsFromBillHeader().subscribe({
+    this.service.getBillingDetailsByUserId(this.currentUserId).subscribe({
       next: (response: any) => {
         this.billHeaders = response.rows.map((row: any) => row.doc);
-        this.generateCharts();
+        console.log("headers",this.billHeaders);
+        this.fetchInvoices();
       },
-      error: (error) => {
-        console.log('Error fetching bill headers:', error);
-      }
+      error: (error) => console.log('Error fetching bill headers:', error)
     });
   }
 
   fetchInvoices(): void {
-    this.service.getBillingDetailsFromInvoice().subscribe({
-      next: (response: any) => {
-        this.invoices = response.rows.map((row: any) => row.doc);
+    const invoiceRequests = this.billHeaders.map(billedProduct =>
+      this.service.getInvoicesByBillId(billedProduct._id)
+    );
+
+    forkJoin(invoiceRequests).subscribe({
+      next: (responses: any[]) => {
+        console.log(responses);  
+        this.invoices = responses.flatMap(response => 
+          response.rows.map((row: any) => row.doc)   
+        ); console.log("invoices",this.invoices); //all products
         this.generateCharts();
+        this.calculateTopProducts();
       },
-      error: (error) => {
-        console.log('Error fetching invoices:', error);
-      }
+      error: (error) => console.log('Error fetching invoices:', error)
     });
   }
 
+  calculateTopProducts(): void {
+    const productMap = new Map<string, number>();
 
-  
+    this.invoices.forEach(invoice => {
+      const productId = invoice.data.productId;
+      const quantity = invoice.data.quantity || 0;
+
+      if (productMap.has(productId)) {
+        productMap.set(productId, productMap.get(productId)! + quantity);
+      } else {
+        productMap.set(productId, quantity);
+      }
+    });
+
+    const sortedTopProducts = Array.from(productMap.entries())
+      .map(([productId, totalQuantity]) => ({ productId, totalQuantity }))
+      .sort((a, b) => b.totalQuantity - a.totalQuantity)
+      .slice(0, 5);
+
+      const productFetchPromises = sortedTopProducts.map(product =>
+        firstValueFrom(this.service.getProductById(product.productId))
+          .then((res: any) => ({
+            productId: product.productId,
+            totalQuantity: product.totalQuantity,
+            productName: res?.data?.productName || 'Unknown'
+          }))
+          .catch(() => ({
+            productId: product.productId,
+            totalQuantity: product.totalQuantity,
+            productName: 'Unknown'
+          }))
+      );
+
+    Promise.all(productFetchPromises).then(finalList => {
+      this.topProducts = finalList;
+    });
+  }
 
   generateCharts(): void {
     if (!this.billHeaders.length || !this.invoices.length) return;
-
     if (this.selectedChart === '7days') {
       this.generatePast7DaysChart();
     } else {
@@ -105,22 +144,16 @@ export class DashBoardComponent {
     this.billHeaders.forEach(bill => {
       const billDate = new Date(bill.data.date);
       const dateKey = d3.timeFormat('%Y-%m-%d')(d3.timeDay.floor(billDate));
-
       if (grouped.has(dateKey)) {
         const quantity = this.invoices
           .filter(invoice => invoice.data.billId === bill._id)
           .reduce((sum, invoice) => sum + invoice.data.quantity, 0);
-
-        const entry = grouped.get(dateKey)!;
-        entry.total += quantity;
+        grouped.get(dateKey)!.total += quantity;
       }
     });
 
     const data = Array.from(grouped.entries())
-      .map(([key, value]) => ({
-        groupKey: key,
-        totalQuantity: value.total
-      }));
+      .map(([key, value]) => ({ groupKey: key, totalQuantity: value.total }));
 
     this.renderBarChart(data, '#past-7-days-chart', 'Sales Bar Chart (Last 7 Days)');
   }
@@ -131,17 +164,13 @@ export class DashBoardComponent {
     this.billHeaders.forEach(bill => {
       const billDate = new Date(bill.data.date);
       const monthKey = d3.timeFormat('%Y-%m')(billDate);
-
       if (!grouped.has(monthKey)) {
         grouped.set(monthKey, { month: monthKey, total: 0 });
       }
-
       const quantity = this.invoices
         .filter(invoice => invoice.data.billId === bill._id)
         .reduce((sum, invoice) => sum + invoice.data.quantity, 0);
-
-      const entry = grouped.get(monthKey)!;
-      entry.total += quantity;
+      grouped.get(monthKey)!.total += quantity;
     });
 
     const data = Array.from(grouped.values())
@@ -153,7 +182,6 @@ export class DashBoardComponent {
   renderBarChart(data: any[], containerId: string, title: string): void {
     d3.select(containerId).html('');
     const isMonthlyChart = containerId === '#monthly-comparison-chart';
-
     const margin = { top: 22, right: 30, bottom: 60, left: 20 };
     const width = isMonthlyChart ? 290 : 420;
     const chartWidth = width - margin.left - margin.right;
@@ -183,8 +211,7 @@ export class DashBoardComponent {
       .attr('transform', 'rotate(-45)')
       .style('text-anchor', 'end');
 
-    svg.append('g')
-      .call(d3.axisLeft(y));
+    svg.append('g').call(d3.axisLeft(y));
 
     svg.selectAll('.bar')
       .data(data)

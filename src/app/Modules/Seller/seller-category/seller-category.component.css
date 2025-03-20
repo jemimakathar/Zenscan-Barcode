@@ -1,155 +1,236 @@
-h2 {
-    margin-left: 50%;
-}
-
-/* Button Styling */
-button {
-    background-color: #6b8bad;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: 0.3s ease-in-out;
-    margin-left: 10px;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-/* Category Form */
-.category-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    margin-top: 10px;
-    margin-left: 85%; /* Changed to 0 to align to the left */
-    position: absolute; /* Added to position the form */
-    left: 20px; /* Adjust this value to position the form as needed */
-    top: 100px; /* Adjust this value to position the form as needed */
-    transform: translateX(-50%);
-    z-index: 100;
-}
-
-input,
-select {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-/* Category List */
-.category-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-/* Category Card */
-.category-display{
-  margin-left:25%;
-
-}
-.category-card {
-  background: linear-gradient(135deg, #a4afeb, #292727);
-  color: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  width:230px; /* Make the card take up the full width of the grid cell */
-  text-align: center;
-  margin-left:5px; /* Remove the left margin */
-  height: 120px;
-  transition: 0.3s ease-in-out;
-  position: relative;
-  
-}
-.category-card h3 {
-    margin: 0;
-    font-size: 18px;
-}
-
-.category-card p {
-    margin: 5px 0;
-    font-size: 14px;
-}
-.category-card:hover {
-    transform: scale(1.05);
-}
-
-/* Submit and Cancel Buttons */
-a {
-    display: block;
+/* Title Heading */
+.title-heading {
     text-align: center;
-    padding: 10px 15px;
-    margin-top: 10px;
-    background-color: #28a745;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-family: "Poppins", sans-serif;
-    transition: 0.3s;
-}
-
-a:hover {
-    background-color: #218838;
-    transform: scale(1.05);
-}
-
-.barcode-preview {
-    margin-top: 10px;
-    text-align: center;
-}
-
-.barcode-preview p {
-    font-weight: bold;
-    font-size: 14px;
+    font-size: 28px;
     color: #333;
+    margin-left: 18%;
+  }
+  
+  /* Plus Icon (Add Category Button) */
+  .icon {
+    height: 36px;
+    width: 36px;
+    float: right;
+    margin-right: 40px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .icon:hover {
+    transform: scale(1.15);
+  }
+  
+/* Add this to your CSS */
+.category-form {
+  position: fixed;
+  top: 80px;
+  right: 40px;
+  width: 320px;
+  max-height: 80vh; /* Maximum height relative to viewport */
+  overflow-y: auto; /* Enable vertical scrolling */
+  background: #edfcfc;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: slideIn 0.3s ease-out;
 }
 
-#barcodePreview {
-    border: 1px solid #ddd;
-    padding: 5px;
-    display: block;
-    margin: auto;
-    background: white;
+/* Add smooth scroll behavior */
+.category-form::-webkit-scrollbar {
+  width: 8px;
 }
 
-.barcode-preview img {
-    height: auto;
-    width: auto;
-    display: block;
-    margin: auto;
-   
+.category-form::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.category-form::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.category-form::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Rest of your existing CSS remains the same */
+.title-heading {
+  text-align: center;
+  font-size: 28px;
+  color: #333;
+  margin-left: 18%;
 }
 
 .icon {
-    height: 30px;
-    width: 30px;
-    margin-left: 96%;
-    cursor: pointer; /* Added to indicate it's clickable */
-    transition: transform 0.3s ease-in-out;
+  height: 36px;
+  width: 36px;
+  float: right;
+  margin-right: 40px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
+
 .icon:hover {
-    transform: scale(1.1);
+  transform: scale(1.15);
 }
-.trash{
-    height:25px;
-    width:25px;
-    margin-left: 205px;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
+
+.category-form a.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #e60000;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+.category-form a.close-btn:hover {
+  color: #ce0606;
+  transform: scale(1.2);
+}
+
+.category-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 90%;
+}
+
+.category-form input[type="color"],[type="text"] {
+  padding: 0;
+  height: 40px;
+  width: 90%;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.category-form a:not(.close-btn) {
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 15px;
+  transition: 0.3s;
+  width: 85%;
+}
+
+.category-form a:not(.close-btn):hover {
+  background-color: #0056b3;
+}
+
+.barcode-preview {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.barcode-preview p {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.barcode-preview img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  padding: 6px;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+.category-display {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-left: 20%;
+}
+
+.category-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.category-card {
+  background: #d0dada;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  padding: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  border-top: 6px solid #000000;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.category-card h3 {
+  font-size: 20px;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.category-card p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.category-card button {
+  background-color: #e93b06;
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.category-card button:hover {
+  background-color: #962d13;
+}
+
+.trash {
+  height: 24px;
+  width: 24px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
 .trash:hover {
-    transform: scale(1.1);
+  transform: scale(1.2);
 }
+
+.color-tag {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-top: 8px;
+  border: 2px solid #ccc;
+}
+  

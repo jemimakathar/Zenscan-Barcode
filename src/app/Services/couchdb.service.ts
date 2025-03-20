@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,10 @@ export class CouchdbService {
     'Content-Type': 'application/json',
   });
 
-  constructor(readonly http: HttpClient) { }
+  constructor(readonly http: HttpClient,readonly authService:AuthenticationService) { }
+
+  currentUserId: string = "";
+
 
 
   // category service
@@ -82,7 +86,6 @@ export class CouchdbService {
     return this.http.post<any>(`${this.baseUrl}`, newProduct, { headers: this.headers });
   }
 
-
   bulkProductDeletion(products: any[]): Observable<any> {
     return this.http.post(`${this.baseUrl}/_bulk_docs`, { docs: products }, { headers: this.headers });
   }
@@ -105,18 +108,29 @@ export class CouchdbService {
     return this.http.get(url, { headers: this.headers });
   }
 
-  getBillingDetailsFromBillHeader(): Observable<any> {
-    const url = `${this.baseUrl}/_design/View/_view/billingdetails_by_id?include_docs=true`;
+  // getBillingDetailsFromBillHeader(): Observable<any> {
+  //   const url = `${this.baseUrl}/_design/View/_view/billingdetails_by_id?include_docs=true`;
+  //   return this.http.get(url, { headers: this.headers });
+  // }
+
+  getBillingDetailsByUserId(userId: string): Observable<any> {
+    const url = `${this.baseUrl}/_design/View/_view/billingdetails_by_id?key="${userId}"&include_docs=true`;
     return this.http.get(url, { headers: this.headers });
   }
 
-
+  // Get customer by phone number using CouchDB search index
   getCustomerByPhone(phoneNumber: string): Observable<any> {
-    const url = `${this.baseUrl}/_design/View/_view/billingdetails_by_id?key="${phoneNumber}"&include_docs=true`;
-    console.log(url);
-    
-    return this.http.get(url, { headers: this.headers });
-  } 
+    this.currentUserId=this.authService.getUserId() ?? "";
+    const url = `${this.baseUrl}/_design/search_index/_search/searchbycustomernumber?q=customerno:"${encodeURIComponent(phoneNumber)}" AND userId:${this.currentUserId}`;
+    return this.http.get(url,{headers:this.headers});
+  }
+
+  getInvoicesByBillId(billId:any):Observable<any>
+  {
+    const url = `${this.baseUrl}/_design/View/_view/salesline_by_billId?key="${billId}"&include_docs=true`;
+    return this.http.get(url, { headers: this.headers }); 
+  }
+
 
 
 
