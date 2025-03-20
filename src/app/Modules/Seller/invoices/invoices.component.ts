@@ -51,6 +51,7 @@ export class InvoicesComponent implements OnInit {
 
   // Fetch all bill headers
   fetchBillHeaders(): void {
+    
     this.currentUserId = localStorage.getItem('currentUserId') ?? this.service.currentUserId;
   
     this.service.getBillingDetailsByUserId(this.currentUserId).subscribe({
